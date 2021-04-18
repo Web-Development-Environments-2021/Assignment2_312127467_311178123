@@ -9,8 +9,35 @@ var interval;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-	Start();
+	$("#time").hide();
+	$("#score").hide();
+
+	//Start();
 });
+
+
+
+function showPage(page){
+	// if (page === 'welcome'){
+	// 	$('body').css({'background-image': 'url(logo_back.jpg)'});
+
+	// }
+	hideDivs();
+    $('#' + page).show();
+}
+
+function hideDivs(){
+	$("#time").hide();
+	$("#welcome").hide();
+	$("#score").hide();
+	$("#game").hide();
+//   $("#game").style.display = ($("#game").style.display == "none" ? "block" : "none")
+//   $("#time").style.display = ($("#time").style.display == "none" ? "block" : "none")
+
+//   $("#score").style.display = ($("#score").style.display == "none" ? "block" : "none")
+
+
+}
 
 function Start() {
 	board = new Array();

@@ -1,0 +1,113 @@
+@keyframes letters {
+    0%{ 
+      color: black; 
+    } 
+    30%{ 
+        letter-spacing: 25px; 
+        } 
+    85%{ 
+        letter-spacing: 8px; 
+    } 
+  } 
+
+  @-webkit-keyframes moveImg {
+    0% {
+        top:500px;
+    }
+    100% {
+        top: 0px;
+    }
+  }
+
+body {
+    background-image: url(logo_back.jpg);
+    background-repeat: round;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.menu {
+    overflow: hidden;
+    background-color: rgb(216, 179, 17);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column-reverse;
+    z-index: 1;
+  }
+  
+  .links{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation-name: letters;
+    animation-duration: 4s;
+  }
+  
+  .menu a {
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .menu :last-child{
+    float: right;
+  }
+  .menu a:hover {
+    background: #ddd;
+    color: black;
+  }
+
+  .logo {
+    position: relative;
+    -webkit-animation: moveImg 4s normal ease-out;
+     
+  }
+
+  footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    text-align: center;
+    background-color: orange;
+}
+
+/* -------------- All the Ids ------------- */
+
+/* Welcome screen */
+#welcome {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    align-items: center;
+    align-content: stretch;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+
+/* Boxes and buttons */
+.box input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #FDD427;
+    color: gray;
+    font-size: 30px;
+    border-radius: 20px;
+    height: 60px;
+    margin-top: 20px;
+    width: 30%;
+}
+.box input[type="submit"]:hover {
+	background: #FFB61C;
+	color: black;
+}
+

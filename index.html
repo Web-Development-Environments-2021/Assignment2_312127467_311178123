@@ -2,10 +2,36 @@
 <html>
 	<head>
 		<script src="./jquery-3.4.1.slim.min.js"></script>
-		<script type="text/javascript" src="./app.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+
+
 	</head>
 
 	<body>
+
+		<div class="menu">
+  
+			<div class="links">
+				<a id="menu_welcome" onclick="showPage('welcome')">Welcome</a>
+				<a id="menu_login" onclick="showPage('login')">Log In</a>
+				<a id="menu_register" onclick="showPage('register')">Register</a>
+				<a id="menu_about" onclick="showPage('about')">About</a>
+				<div class="logo">
+					<img src="logo.png" width=30, height=30>
+				  </div>
+			</div>
+		  </div>
+
+
+		<!--WELCOME -->
+		<div id="welcome" class="box">
+			<img id="welcome_image" src="./welcome_logo.jpg">
+			<input type="submit" value="Register" onclick="showPage('register')"/>
+			<input type="submit" value="Login" onclick="showPage('login')"/>
+		</div>
+
+
 		<div id="score">
 			<label for="lblScore">SCORE:</label>
 			<input id="lblScore" type="text" />
@@ -17,5 +43,8 @@
 		<div id="game">
 			<canvas id="canvas" height="600" width="600"></canvas>
 		</div>
+		<footer>
+			If you thinking your self "whom should I say thank you for this AWESOME designed pacman ?", The answer is: Aviv Amsellem and Yarden Curiel. Please Contact us at avivams@post.bgu.ac.il, curiey@post.bgu.ac.il.<br>Note: Please don't really contact us, we have to write this for the assignment. Thank you for the understanding.
+		</footer>
 	</body>
 </html>
