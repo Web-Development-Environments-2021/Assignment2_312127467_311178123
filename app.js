@@ -96,10 +96,8 @@ function checklogin(){
 	var username_val = $.trim($('#username_login').val());
 	var password_val = $.trim($('#password_login').val());
 
-	console.log(username_val)
 
 	var user_password = localStorage.getItem(username_val);
-	console.log(user_password)
 	if(user_password == null){
 	  alert('Username Does Not Exist');
 	  return false;
@@ -109,9 +107,9 @@ function checklogin(){
 		return false;
 	}
 	else{
-	  alert('Welcome Back '+ username_val+'!');
-	//   Start()
-	  return true;
+		alert('Welcome Back '+ username_val+'!');
+			
+		return true;
 	}
 }
 
