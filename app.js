@@ -22,6 +22,7 @@ function showPage(page){
 	// 	$('body').css({'background-image': 'url(logo_back.jpg)'});
 
 	// }
+
 	hideDivs();
     $('#' + page).show();
 }
@@ -31,12 +32,7 @@ function hideDivs(){
 	$("#welcome").hide();
 	$("#score").hide();
 	$("#game").hide();
-//   $("#game").style.display = ($("#game").style.display == "none" ? "block" : "none")
-//   $("#time").style.display = ($("#time").style.display == "none" ? "block" : "none")
-
-//   $("#score").style.display = ($("#score").style.display == "none" ? "block" : "none")
-
-
+	$("#registration").hide();
 }
 
 function Start() {
