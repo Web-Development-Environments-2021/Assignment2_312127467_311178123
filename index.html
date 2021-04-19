@@ -35,14 +35,25 @@
 		<div class = "register" id="registration" class="box">
 			<p class="registration_title">Registration</p>
 			
-			<form method="post" action="https://getform.org/f/70415a77-d632-4883-bf07-2e15d3f557da">
+			<form method="post" onsubmit="return checkform()">
 
-			<span class="font"></span><input type="text" required placeholder="Username" autocomplete="off"> 
-			<span class="font"></span><input type="password" name="password" id="password" required placeholder="Password" autocomplete="off"> 
-			<span class="font"></span><input type="text" id="FullName" required placeholder="Full Name" autocomplete="off">
-			<span class="font"></span><input type="email" id="email" required placeholder="Email" autocomplete="off">
-			<span class = "font"></span><input type="date" id="Birthdate" required placeholder="Birthdate">
+			<span class="font"></span><input type="text" id="username" placeholder="Username" autocomplete="off"> 
+			<span class="font"></span><input type="password" id="password" placeholder="Password" autocomplete="off"> 
+			<span class="font"></span><input type="text" id="fullname" placeholder="Full Name" autocomplete="off">
+			<span class="font"></span><input type="text" id="email" placeholder="Email" autocomplete="off">
+			<span class="font"></span><input type="date" id="birthdate" placeholder="Birthdate">
 			<input type="submit" value="Register">
+		</div>
+
+		<!-- LogIn -->
+		<div class = "login" id="login" class="box">
+			<p class="registration_title">LOGIN</p>
+			
+			<form method="post" onsubmit="return checklogin()">
+
+			<span class="font"></span><input type="text" id="username_login" placeholder="Username" autocomplete="off"> 
+			<span class="font"></span><input type="password" id="password_login" placeholder="Password" autocomplete="off"> 
+			<input type="submit" value="LOG IN">
 		</div>
 
 		<div id="score">

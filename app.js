@@ -9,6 +9,7 @@ var interval;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
+	localStorage.setItem('k','k');
 	showPage("welcome")
 
 	//Start();
@@ -32,6 +33,86 @@ function hideDivs(){
 	$("#score").hide();
 	$("#game").hide();
 	$("#registration").hide();
+	$("#login").hide();
+}
+
+function validateEmail(email) {
+	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(String(email).toLowerCase());
+}
+
+function checkform(){
+	var username_val = $.trim($('#username').val());
+	var password_val = $.trim($('#password').val());
+	var fullname_val = $.trim($('#fullname').val());
+	var email_val = $.trim($('#email').val());
+	var birthdate_val = $.trim($('#birthdate').val());
+
+	if(!username_val){
+	  alert('Please Enter Your Username');
+	  return false;
+	}
+	if(!password_val){
+		alert('Please Enter Your Password');
+		return false;
+	}
+	else if(password_val.length < 6){
+		alert('Your Password Must Be Atleast 6 Characters');
+		return false;
+	}
+	else if( !(/\d/.test(password_val)&/[a-z]/i.test(password_val))){
+		alert('Your Password Must Contain Both Numbers And Letters');
+		return false;
+	}
+	if(!fullname_val){
+		alert('Please Enter Your Full Name');
+		return false;
+	}
+	else if(/\d/.test(fullname_val)){
+		alert('Full Name Cannot Contain Numbers');
+		return false;
+	}
+	if(!email_val){
+		alert('Please Enter Your Email');
+		return false;
+	}
+	else if(!validateEmail(email_val)){
+		alert('Please Enter A Valid Email Address');
+		return false;
+	}
+
+	if(!birthdate_val){
+		alert('Please Enter Your Birthdate');
+		return false;
+	}
+	else{
+	  alert('Thank You For Registering!');
+	  localStorage.setItem(username_val,password_val);
+	  return true;
+	}
+}
+
+function checklogin(){
+	var username_val = $.trim($('#username_login').val());
+	var password_val = $.trim($('#password_login').val());
+
+	console.log(username_val)
+
+	var user_password = localStorage.getItem(username_val);
+	console.log(user_password)
+	if(user_password == null){
+	  alert('Username Does Not Exist');
+	  return false;
+	}
+	else if(user_password != password_val){
+		alert('Incorrect Password');
+		return false;
+	}
+	else{
+	  alert('Welcome Back!', username_val);
+	//   Start()
+	  return true;
+	}
 }
 
 function Start() {
