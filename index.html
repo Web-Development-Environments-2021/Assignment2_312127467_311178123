@@ -15,7 +15,7 @@
 			<div class="links">
 				<a id="menu_welcome" onclick="showPage('welcome')">Welcome</a>
 				<a id="menu_login" onclick="showPage('login')">Log In</a>
-				<a id="menu_register" onclick="showPage('register')">Register</a>
+				<a id="menu_register" onclick="showPage('registration')">Register</a>
 				<a id="menu_about" onclick="showPage('about')">About</a>
 				<div class="logo">
 					<img src="logo.png" width=30, height=30>
@@ -27,10 +27,23 @@
 		<!--WELCOME -->
 		<div id="welcome" class="box">
 			<img id="welcome_image" src="./welcome_logo.jpg">
-			<input type="submit" value="Register" onclick="showPage('register')"/>
+			<input type="submit" value="Register" onclick="showPage('registration')"/>
 			<input type="submit" value="Login" onclick="showPage('login')"/>
 		</div>
 
+		<!-- REGISTER -->
+		<div class = "register" id="registration" class="box">
+			<p class="registration_title">Registration</p>
+			
+			<form method="post" action="https://getform.org/f/70415a77-d632-4883-bf07-2e15d3f557da">
+
+			<span class="font"></span><input type="text" required placeholder="Username" autocomplete="off"> 
+			<span class="font"></span><input type="password" name="password" id="password" required placeholder="Password" autocomplete="off"> 
+			<span class="font"></span><input type="text" id="FullName" required placeholder="Full Name" autocomplete="off">
+			<span class="font"></span><input type="email" id="email" required placeholder="Email" autocomplete="off">
+			<span class = "font"></span><input type="date" id="Birthdate" required placeholder="Birthdate">
+			<input type="submit" value="Register">
+		</div>
 
 		<div id="score">
 			<label for="lblScore">SCORE:</label>
