@@ -9,8 +9,7 @@ var interval;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
-	$("#time").hide();
-	$("#score").hide();
+	showPage("welcome")
 
 	//Start();
 });
