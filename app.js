@@ -109,7 +109,7 @@ function checklogin(){
 		return false;
 	}
 	else{
-	  alert('Welcome Back!', username_val);
+	  alert('Welcome Back '+ username_val+'!');
 	//   Start()
 	  return true;
 	}
