@@ -66,10 +66,26 @@
 			<p class="registration_title" id="config_title">Game Configuration Set Up Page</p>
 			
 			<form method="post">
+			<label for="quantity" style="color: white;">How would you like to move your character?</label>
+			</br>
 
-			<span class="font"></span><input type="text" id="username_login" placeholder="Username" autocomplete="off"> 
-			<span class="font"></span><input type="password" id="password_login" placeholder="Password" autocomplete="off"> 
-			<input type="submit" onclick="startGame()" value="LOG IN">
+			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowkeyUp"> 
+			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowkeyDown">
+			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowkeyLeft"> 
+			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowkeyRight"> 
+
+
+			<label for="quantity" style="color: white;">How many food balls would you like in the game?</br> (Between 50 to 90):</label>
+			</br>
+			<input type="number" id="quantity" name="quantity" min="50" max="90" value="50"></br>
+			<label for="quantity" style="color: white;">Game Duration</br> (Atleast 60 seconds):</label>
+			</br>
+			<input type="number" id="quantity" name="quantity" min="60" value="60"></br>
+			<label for="quantity" style="color: white;">Monsters</br> (Betweem 1 to 4):</label>
+			</br>
+			<input type="number" id="quantity" name="quantity" min="1" max="4" value="2"></br>
+			<input type="submit" onclick="configure()" value="START GAME"></br>
+			<input type="submit" onclick="configure()" value="RANDOM">
 			</form>
 		</div>
 

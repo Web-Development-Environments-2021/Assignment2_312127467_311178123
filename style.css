@@ -161,7 +161,7 @@ input {
 	outline: blue;
 }
 
-.screen_input input[type="text"] {
+.screen_input input[type="text"],[type="number"],[type="quantity"] {
 	background-color: #fff;
 	border-top: 2px solid #2c90c6;
 	border-right: 1px solid #000;
@@ -236,5 +236,5 @@ p:hover {
 }
 
 #configuration{
-  width: 50%;
+  margin-top: 10%;
 }
