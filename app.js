@@ -42,7 +42,7 @@ $(document).ready(function() {
 			},
 			password:{ 
 				required:"Please Enter A Password",
-				minLength: "Password must be at lease",
+				minLength: "Password must be at least 6 characters",
 			},
 			fullname:{
 				required:"Please Enter A Name",
@@ -159,6 +159,24 @@ validPassword = (passowrd) => {
 		return false;
 	}
 		return true;
+}
+
+function randomInteger(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomColor(){
+	return '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)
+}
+
+function RandomConfig(){
+	$('#ball_quantity').val(randomInteger(50,90));
+	$('#time_quantity').val(randomInteger(60,Infinity));
+	$('#monster_quantity').val(randomInteger(1,4));
+	$('#color1').val(randomColor());
+	$('#color2').val(randomColor());
+	$('#color3').val(randomColor());
+	
 }
 // function validateEmail(email) {
 // 	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
