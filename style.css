@@ -193,7 +193,7 @@ input {
   width: 204px;
 }
 
-.screen_input input[type="submit"] {
+.screen_input input[type="submit"] , [type="button"]{
 	background-color: #2c90c6;
 	border: 1px solid #2c90c6;
 	border-radius: 15px;
