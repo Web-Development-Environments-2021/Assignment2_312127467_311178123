@@ -12,6 +12,74 @@ $(document).ready(function() {
 	localStorage.setItem('k','k');
 	showPage("welcome")
 
+	$('#reg_form').validate({
+		
+		rules:{
+			username:{
+				required:true
+			},
+			password: {
+				required:true,
+				minLength: 6,
+				pattern:/\d/ &/[a-z]/
+			},
+			fullname:{
+				required:true,
+				pattern: /\d/
+			},
+			email:{
+				required:true
+			},
+			messages:{
+				username:{
+					required:"Please enter a username",
+				},
+				password:{ 
+					required:"Please Enter A Password",
+					minLength: "Password must be at lease",
+					pattern: "Please"
+				},
+				fullname: "invalid Name"
+			}
+			
+
+		},
+		submitHandler:	(form) => {showPage('configuration')}
+		})
+
+
+		$('#login_form').validate({
+		
+			rules:{
+				username:{
+					required:true
+				},
+				password: {
+					required:true,
+				},	
+			},
+			messages:{
+				username:{
+					required:"Please enter a username",
+				},
+				password: "Please enter password",
+			},
+			submitHandler:	(form) => {showPage('configuration')}
+			})
+
+	// $('#login_button').on('click',function(evt) {
+	// 	// return checklogin()
+	// 	if (!checklogin())
+	// 		return false;
+
+	// 	showPage('configuration')
+	// 	return false;
+	// });
+
+	// $('#reg_form').on('submit',function(evt) {
+	// 	return checkRegisteration()
+	// });
+
 	//Start();
 });
 
@@ -33,6 +101,7 @@ function hideDivs(){
 	$("#score").hide();
 	$("#game").hide();
 	$("#registration").hide();
+	$("#configuration").hide();
 	$("#login").hide();
 }
 
@@ -41,7 +110,7 @@ function validateEmail(email) {
 	return re.test(String(email).toLowerCase());
 }
 
-function checkform(){
+function checkRegisteration(){
 	var username_val = $.trim($('#username').val());
 	var password_val = $.trim($('#password').val());
 	var fullname_val = $.trim($('#fullname').val());
@@ -92,6 +161,8 @@ function checkform(){
 	}
 }
 
+
+
 function checklogin(){
 	var username_val = $.trim($('#username_login').val());
 	var password_val = $.trim($('#password_login').val());
@@ -108,9 +179,15 @@ function checklogin(){
 	}
 	else{
 		alert('Welcome Back '+ username_val+'!');
-			
 		return true;
 	}
+}
+
+
+function startGame(){
+	showPage("game");
+	Start();
+
 }
 
 function Start() {

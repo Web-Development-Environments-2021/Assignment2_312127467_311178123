@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<script src="./jquery-3.4.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
 
@@ -31,32 +32,50 @@
 			<input type="submit" value="Login" onclick="showPage('login')"/>
 		</div>
 
-		<!-- REGISTER -->
+		<!-- Register screen -->
 		<div class = "screen_input" id="registration" >
 			<p class="registration_title">Registration</p>
 			
-			<form method="post" onsubmit="return checkform()">
+			<form method="post" id="reg_form">
 
-			<span class="font"></span><input type="text" id="username" placeholder="Username" autocomplete="off"> 
-			<span class="font"></span><input type="password" id="password" placeholder="Password" autocomplete="off"> 
-			<span class="font"></span><input type="text" id="fullname" placeholder="Full Name" autocomplete="off">
-			<span class="font"></span><input type="text" id="email" placeholder="Email" autocomplete="off">
-			<span class="font"></span><input type="date" id="birthdate" placeholder="Birthdate">
+			<span class="font"></span><input name="username" type="text" id="username" placeholder="Username" autocomplete="off"> 
+			<span class="font"></span><input name="password" type="password" id="password" placeholder="Password" autocomplete="off"> 
+			<span class="font"></span><input name="fullname" type="text" id="fullname" placeholder="Full Name" autocomplete="off">
+			<span class="font"></span><input name="email" type="text" id="email" placeholder="Email" autocomplete="off">
+			<span class="font"></span><input name="birthdate" type="date" id="birthdate" placeholder="Birthdate">
 			<input type="submit" value="Register">
 			</form>
 		</div>
 
-		<!-- LogIn -->
+		<!-- Login Screen -->
 		<div class = "screen_input" id="login"  >
 			<p class="registration_title">LOGIN</p>
 			
-			<form method="post" onsubmit="return checklogin()">
+			<form method="post" id="login_form">
+
+			<span class="font"></span><input name="username" type="text" id="username_login" placeholder="Username" autocomplete="off"> 
+			<span class="font"></span><input name="password" type="password" id="password_login" placeholder="Password" autocomplete="off"> 
+			<input type="submit" id="login_button" value="LOG IN">
+			</form>
+		</div>
+
+		
+		
+		<!-- Configuration Screen -->
+		<div class = "screen_input" id="configuration"  >
+			<p class="registration_title" id="config_title">Game Configuration Set Up Page</p>
+			
+			<form method="post">
 
 			<span class="font"></span><input type="text" id="username_login" placeholder="Username" autocomplete="off"> 
 			<span class="font"></span><input type="password" id="password_login" placeholder="Password" autocomplete="off"> 
-			<input type="submit" value="LOG IN">
+			<input type="submit" onclick="startGame()" value="LOG IN">
 			</form>
 		</div>
+
+
+
+
 
 		<div id="score">
 			<label for="lblScore">SCORE:</label>
