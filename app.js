@@ -16,35 +16,48 @@ $(document).ready(function() {
 		
 		rules:{
 			username:{
-				required:true
+				required:true,
+				validUser: true
 			},
 			password: {
 				required:true,
-				minLength: 6,
-				pattern:/\d/ &/[a-z]/
+				minlength: 6,
+				validPassword: true,
 			},
 			fullname:{
 				required:true,
-				pattern: /\d/
+				pattern: /[a-zA-Z]/
 			},
 			email:{
-				required:true
+				required:true,
+				pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 			},
-			messages:{
-				username:{
-					required:"Please enter a username",
-				},
-				password:{ 
-					required:"Please Enter A Password",
-					minLength: "Password must be at lease",
-					pattern: "Please"
-				},
-				fullname: "invalid Name"
+			birthdate:{
+				required:true
 			}
+		},
+		messages:{
+			username:{
+				required:"Please Enter A Username",
+			},
+			password:{ 
+				required:"Please Enter A Password",
+				minLength: "Password must be at lease",
+			},
+			fullname:{
+				required:"Please Enter A Name",
+				pattern: "Fullname can't contain numbers"
+			} ,
+			email:{
+				required: "Please Enter An Email Address",
+				pattern: "Please Enter A Valid Email Address"
+			},
+			birthdate: "Please Enter A Birthdate"
+				
+		},
 			
 
-		},
-		submitHandler:	(form) => {showPage('configuration')}
+		submitHandler:	(form) => {showPage('login')}
 		})
 
 
@@ -52,45 +65,81 @@ $(document).ready(function() {
 		
 			rules:{
 				username:{
-					required:true
+					required:true,
+					isRegistered: true
 				},
 				password: {
 					required:true,
+					isPassowrdCorrect: true
 				},	
 			},
 			messages:{
 				username:{
 					required:"Please enter a username",
+					validUser: "No such username is listed in the system"
+					
 				},
-				password: "Please enter password",
+				password: {
+					required: "Please enter password",
+				}
 			},
 			submitHandler:	(form) => {showPage('configuration')}
 			})
 
-	// $('#login_button').on('click',function(evt) {
-	// 	// return checklogin()
-	// 	if (!checklogin())
-	// 		return false;
-
-	// 	showPage('configuration')
-	// 	return false;
-	// });
-
-	// $('#reg_form').on('submit',function(evt) {
-	// 	return checkRegisteration()
-	// });
 
 	//Start();
 });
 
 
 
+/* ----------- Validation Methods ----------------------------*/
+
+$.validator.addMethod("validPassword", function(value, element){
+
+    if( !(/\d/.test(value)&/[a-z]/i.test(value))){
+        return false;
+    } else {
+        return true;
+    };
+},"Password must contain at least one letter and one number");
+
+$.validator.addMethod("isPassowrdCorrect", function(value, element){
+
+	var username_val = $.trim($('#username_login').val());
+	var user_password = localStorage.getItem(username_val);
+
+	if(user_password != value){
+		return false;
+	}
+	else{
+		return true;
+	}
+},"Wrong Password");
+
+$.validator.addMethod("validUser", function(value, element){
+	var user = localStorage.getItem(value)
+
+    if( user == null){
+        return true;
+    } else {
+        return false;
+    };
+},"A user with the same username already exists in the system");
+
+$.validator.addMethod("isRegistered", function(value, element){
+	var user = localStorage.getItem(value)
+
+    if( user != null){
+        return true;
+    } else {
+        return false;
+    };
+},"No such user exists in the system");
+
+/* ---------------------------------------*/
+
+
 function showPage(page){
-	// if (page === 'welcome'){
-	// 	$('body').css({'background-image': 'url(logo_back.jpg)'});
-
-	// }
-
 	hideDivs();
     $('#' + page).show();
 }
@@ -105,83 +154,89 @@ function hideDivs(){
 	$("#login").hide();
 }
 
-function validateEmail(email) {
-	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return re.test(String(email).toLowerCase());
-}
-
-function checkRegisteration(){
-	var username_val = $.trim($('#username').val());
-	var password_val = $.trim($('#password').val());
-	var fullname_val = $.trim($('#fullname').val());
-	var email_val = $.trim($('#email').val());
-	var birthdate_val = $.trim($('#birthdate').val());
-
-	if(!username_val){
-	  alert('Please Enter Your Username');
-	  return false;
-	}
-	if(!password_val){
-		alert('Please Enter Your Password');
+validPassword = (passowrd) => {
+	if( !(/\d/.test(password_val)&/[a-z]/i.test(password_val))){
 		return false;
 	}
-	else if(password_val.length < 6){
-		alert('Your Password Must Be Atleast 6 Characters');
-		return false;
-	}
-	else if( !(/\d/.test(password_val)&/[a-z]/i.test(password_val))){
-		alert('Your Password Must Contain Both Numbers And Letters');
-		return false;
-	}
-	if(!fullname_val){
-		alert('Please Enter Your Full Name');
-		return false;
-	}
-	else if(/\d/.test(fullname_val)){
-		alert('Full Name Cannot Contain Numbers');
-		return false;
-	}
-	if(!email_val){
-		alert('Please Enter Your Email');
-		return false;
-	}
-	else if(!validateEmail(email_val)){
-		alert('Please Enter A Valid Email Address');
-		return false;
-	}
-
-	if(!birthdate_val){
-		alert('Please Enter Your Birthdate');
-		return false;
-	}
-	else{
-	  alert('Thank You For Registering!');
-	  localStorage.setItem(username_val,password_val);
-	  return true;
-	}
-}
-
-
-
-function checklogin(){
-	var username_val = $.trim($('#username_login').val());
-	var password_val = $.trim($('#password_login').val());
-
-
-	var user_password = localStorage.getItem(username_val);
-	if(user_password == null){
-	  alert('Username Does Not Exist');
-	  return false;
-	}
-	else if(user_password != password_val){
-		alert('Incorrect Password');
-		return false;
-	}
-	else{
-		alert('Welcome Back '+ username_val+'!');
 		return true;
-	}
 }
+// function validateEmail(email) {
+// 	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+// 	return re.test(String(email).toLowerCase());
+// }
+
+// function checkRegisteration(){
+// 	var username_val = $.trim($('#username').val());
+// 	var password_val = $.trim($('#password').val());
+// 	var fullname_val = $.trim($('#fullname').val());
+// 	var email_val = $.trim($('#email').val());
+// 	var birthdate_val = $.trim($('#birthdate').val());
+
+// 	if(!username_val){
+// 	  alert('Please Enter Your Username');
+// 	  return false;
+// 	}
+// 	if(!password_val){
+// 		alert('Please Enter Your Password');
+// 		return false;
+// 	}
+// 	else if(password_val.length < 6){
+// 		alert('Your Password Must Be Atleast 6 Characters');
+// 		return false;
+// 	}
+// 	else if( !(/\d/.test(password_val)&/[a-z]/i.test(password_val))){
+// 		alert('Your Password Must Contain Both Numbers And Letters');
+// 		return false;
+// 	}
+// 	if(!fullname_val){
+// 		alert('Please Enter Your Full Name');
+// 		return false;
+// 	}
+// 	else if(/\d/.test(fullname_val)){
+// 		alert('Full Name Cannot Contain Numbers');
+// 		return false;
+// 	}
+// 	if(!email_val){
+// 		alert('Please Enter Your Email');
+// 		return false;
+// 	}
+// 	else if(!validateEmail(email_val)){
+// 		alert('Please Enter A Valid Email Address');
+// 		return false;
+// 	}
+
+// 	if(!birthdate_val){
+// 		alert('Please Enter Your Birthdate');
+// 		return false;
+// 	}
+// 	else{
+// 	  alert('Thank You For Registering!');
+// 	  localStorage.setItem(username_val,password_val);
+// 	  return true;
+// 	}
+// }
+
+
+
+// function checklogin(){
+// 	var username_val = $.trim($('#username_login').val());
+// 	var password_val = $.trim($('#password_login').val());
+
+
+// 	var user_password = localStorage.getItem(username_val);
+// 	if(user_password == null){
+// 	  alert('Username Does Not Exist');
+// 	  return false;
+// 	}
+// 	else if(user_password != password_val){
+// 		alert('Incorrect Password');
+// 		return false;
+// 	}
+// 	else{
+// 		alert('Welcome Back '+ username_val+'!');
+// 		return true;
+// 	}
+// }
 
 
 function startGame(){
