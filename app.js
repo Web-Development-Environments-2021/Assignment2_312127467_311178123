@@ -6,11 +6,14 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var food_remain;
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	localStorage.setItem('k','k');
-	showPage("welcome")
+	showPage("game");
+	Start();
+	// showPage("welcome");
 
 	$('#reg_form').validate({
 		
@@ -171,12 +174,12 @@ function randomColor(){
 
 function RandomConfig(){
 	$('#ball_quantity').val(randomInteger(50,90));
-	$('#time_quantity').val(randomInteger(60,Infinity));
+	$('#time_quantity').val(randomInteger(60,600));
 	$('#monster_quantity').val(randomInteger(1,4));
 	$('#color1').val(randomColor());
 	$('#color2').val(randomColor());
 	$('#color3').val(randomColor());
-	
+
 }
 // function validateEmail(email) {
 // 	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -263,12 +266,19 @@ function startGame(){
 
 }
 
+function initGameSettings(){
+	food_remain = $.trim($('#ball_quantity').val());
+
+}
+
 function Start() {
 	board = new Array();
 	score = 0;
 	pac_color = "yellow";
 	var cnt = 100;
-	var food_remain = 50;
+	initGameSettings();
+	// var food_remain = 50;
+	
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {
