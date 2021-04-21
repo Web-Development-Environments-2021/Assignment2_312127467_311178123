@@ -156,8 +156,26 @@ $.validator.addMethod("isRegistered", function(value, element){
 
 
 function showPage(page){
+	if(page === "about"){
+		$(document.body).css( "background", "white" );
+	}
+
+	else if(page === "about"){
+		$(document.body).css( "background", "gray" );
+	}
+	else{
+		setBackroundImageForBody("./pictures/back5.jpg")
+	}
+
 	hideDivs();
     $('#' + page).show();
+}
+
+setBackroundImageForBody = (picture_path) => {
+		$(document.body).css( "background-image", "url(" + picture_path + ")");
+		$(document.body).css("background-repeat","round");
+		$(document.body).css("background-attachment", "fixed");
+		$(document.body).css("background-size", "cover");
 }
 
 function hideDivs(){
@@ -168,6 +186,8 @@ function hideDivs(){
 	$("#registration").hide();
 	$("#configuration").hide();
 	$("#login").hide();
+	$("#about").hide();
+
 }
 
 validPassword = (passowrd) => {
@@ -335,8 +355,6 @@ function Start() {
 
 
 	initGameSettings();
-	// var food_remain = 50;
-
 	$("#MoveUp").val(moveup);
 	$("#MoveDown").val(movedown);
 	$("#MoveLeft").val(moveleft);
