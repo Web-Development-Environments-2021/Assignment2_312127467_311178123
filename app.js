@@ -6,7 +6,20 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+// Game vars
+var moveupkey;
+var movedown;
+var moveleft;
+var moveright;
 var food_remain;
+var time_countdown;
+var monster_quantity;
+var color1;
+var color2;
+var color3;
+
+
+
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
@@ -259,16 +272,41 @@ function RandomConfig(){
 // 	}
 // }
 
-
 function startGame(){
-	showPage("game");
+	console.log($("#up").val());
+
+	// showPage("game");
 	Start();
 
 }
 
 function initGameSettings(){
+	// moveup =  $('#up:text').val();
+	// console.log(moveup);
+	movedown = $.trim($('#down').val());
+	moveleft = $.trim($('#left').val());
+	moveright = $.trim($('#right').val());
 	food_remain = $.trim($('#ball_quantity').val());
+	time_countdown = $.trim($('#time_quantity').val());
+	monster_quantity = $.trim($('#monster_quantity').val());
+	console.log(monster_quantity);
 
+	color1 = $.trim($('#color1').val());
+	color2 = $.trim($('#color2').val());
+	color3 = $.trim($('#color3').val());
+
+	// $(document).keydown(function(event){
+		
+	// })
+}
+
+function limit(element)
+{
+    var max_chars = 1;
+
+    if(element.value.length > max_chars) {
+        element.value = element.value.substr(0, max_chars);
+    }
 }
 
 function Start() {
@@ -279,6 +317,12 @@ function Start() {
 	initGameSettings();
 	// var food_remain = 50;
 	
+	moveupkey =  $('#up').val();
+	console.log(moveupkey);
+	$("#up_key").val(moveupkey);
+	$("#MoveDown").val(movedown);
+	$("#MoveLeft").val(moveleft);
+	$("#MoveRight").val(moveright);
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {

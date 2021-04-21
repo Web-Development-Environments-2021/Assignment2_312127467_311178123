@@ -68,7 +68,7 @@
 			<label for="quantity" style="color: white;">How would you like to move your character?</label>
 			</br>
 
-			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowkeyUp"> </br>
+			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowkeyUp" onkeydown="limit(this);" onkeyup="limit(this);"> </br>
 			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowkeyDown"></br>
 			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowkeyLeft"> </br>
 			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowkeyRight"> </br>
@@ -101,7 +101,7 @@
 			</br>
 		</br>
 	</br>
-			<input type="submit" onclick="configure()" value="START GAME"></br>
+			<input type="submit" onclick="startGame()" value="START GAME"></br>
 			<input type="button" onclick="RandomConfig()" value="RANDOM">
 
 			</form>
@@ -120,6 +120,11 @@
 			<input id="lblTime" type="text" />
 		</div>
 		<div id="game">
+			<label for="lblConfig" style = "color: white;">Configurations:</label></br>
+			<input class = "configs" id="up_key"  type="text" readonly="readonly"></br>
+			<input class = "configs" id="MoveDown"  type="text" readonly="readonly"></br>
+			<input class = "configs" id="MoveLeft"  type="text" readonly="readonly"></br>
+			<input class = "configs" id="MoveRight"  type="text" readonly="readonly"></br>
 			<canvas id="canvas" height="600" width="600"></canvas>
 		</div>
 		<footer>

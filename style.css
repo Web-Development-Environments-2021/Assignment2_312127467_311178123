@@ -237,3 +237,11 @@ p:hover {
 #config_title{
   margin: 5% auto;
 }
+
+.configs{
+  margin-top: 50px;
+}
+
+.lblConfigs{
+  margin-top: 50px;
+}
