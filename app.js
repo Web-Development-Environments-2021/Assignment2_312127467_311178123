@@ -24,9 +24,9 @@ var color3;
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	localStorage.setItem('k','k');
-	showPage("game");
-	Start();
-	// showPage("welcome");
+
+	updateOnChange();
+	showPage("welcome");
 
 	$('#reg_form').validate({
 		
@@ -272,24 +272,41 @@ function RandomConfig(){
 // 	}
 // }
 
-function startGame(){
-	console.log($("#up").val());
+function updateOnChange(){
+	$("#up").on("change", function(){
+		moveup = $("#up").val();
+		$("#MoveUp").val(moveup);
+	})
+	$("#down").on("change", function(){
+		movedown = $("#down").val();
+		$("#MoveDown").val(movedown);
+	})
+	$("#left").on("change", function(){
+		moveleft = $("#left").val();
+		$("#MoveLeft").val(moveleft);
+	})
+	$("#right").on("change", function(){
+		moveright = $("#right").val();
+		$("#MoveRight").val(moveright);
+	})
 
-	// showPage("game");
+}
+
+function startGame(){
+
+	showPage("game");
 	Start();
 
 }
 
 function initGameSettings(){
-	// moveup =  $('#up:text').val();
-	// console.log(moveup);
+	moveup = $.trim($('#up').val());
 	movedown = $.trim($('#down').val());
 	moveleft = $.trim($('#left').val());
 	moveright = $.trim($('#right').val());
 	food_remain = $.trim($('#ball_quantity').val());
 	time_countdown = $.trim($('#time_quantity').val());
 	monster_quantity = $.trim($('#monster_quantity').val());
-	console.log(monster_quantity);
 
 	color1 = $.trim($('#color1').val());
 	color2 = $.trim($('#color2').val());
@@ -314,15 +331,17 @@ function Start() {
 	score = 0;
 	pac_color = "yellow";
 	var cnt = 100;
+
+
+
 	initGameSettings();
 	// var food_remain = 50;
-	
-	moveupkey =  $('#up').val();
-	console.log(moveupkey);
-	$("#up_key").val(moveupkey);
+
+	$("#MoveUp").val(moveup);
 	$("#MoveDown").val(movedown);
 	$("#MoveLeft").val(moveleft);
 	$("#MoveRight").val(moveright);
+
 	var pacman_remain = 1;
 	start_time = new Date();
 	for (var i = 0; i < 10; i++) {

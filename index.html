@@ -69,9 +69,9 @@
 			</br>
 
 			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowkeyUp" onkeydown="limit(this);" onkeyup="limit(this);"> </br>
-			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowkeyDown"></br>
-			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowkeyLeft"> </br>
-			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowkeyRight"> </br>
+			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowkeyDown" onkeydown="limit(this);" onkeyup="limit(this);"></br>
+			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowkeyLeft" onkeydown="limit(this);" onkeyup="limit(this);"> </br>
+			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowkeyRight" onkeydown="limit(this);" onkeyup="limit(this);"> </br>
 			</br>
 
 
@@ -101,7 +101,7 @@
 			</br>
 		</br>
 	</br>
-			<input type="submit" onclick="startGame()" value="START GAME"></br>
+			<input type="button" onclick="startGame()" value="START GAME"></br>
 			<input type="button" onclick="RandomConfig()" value="RANDOM">
 
 			</form>
@@ -120,11 +120,13 @@
 			<input id="lblTime" type="text" />
 		</div>
 		<div id="game">
-			<label for="lblConfig" style = "color: white;">Configurations:</label></br>
-			<input class = "configs" id="up_key"  type="text" readonly="readonly"></br>
-			<input class = "configs" id="MoveDown"  type="text" readonly="readonly"></br>
-			<input class = "configs" id="MoveLeft"  type="text" readonly="readonly"></br>
-			<input class = "configs" id="MoveRight"  type="text" readonly="readonly"></br>
+			<div class = "configs">
+			<label for="lblconfigs" style = "color: white;">Configurations:</label></br>
+			<input class = "c" id="MoveUp"  type="text" readonly="readonly"></br>
+			<input class = "c" id="MoveDown"  type="text" readonly="readonly"></br>
+			<input class = "c" id="MoveLeft"  type="text" readonly="readonly"></br>
+			<input class = "c" id="MoveRight"  type="text" readonly="readonly"></br>
+			</div>
 			<canvas id="canvas" height="600" width="600"></canvas>
 		</div>
 		<footer>

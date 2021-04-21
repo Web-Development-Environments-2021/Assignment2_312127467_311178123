@@ -242,6 +242,12 @@ p:hover {
   margin-top: 50px;
 }
 
-.lblConfigs{
-  margin-top: 50px;
+#canvas{
+  margin-left: 15%;
+
+}
+#game{
+  margin-left: 0px;
+  display: flex;
+  width: 100%;
 }
