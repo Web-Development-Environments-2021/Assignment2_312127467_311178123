@@ -21,10 +21,10 @@
 
 body {
     font-family: Arial, sans-serif;
+    text-align: center;
     font-size: 14px;
-    line-height: 1.5em;
+    line-height: 20px;
 }
-
 
 .error {
   color: #F00;
@@ -125,16 +125,7 @@ body {
 @import url(http://weloveiconfonts.com/api/?family=fontawesome);
 @import url(https://meyerweb.com/eric/tools/css/reset/reset.css);
 
-<<<<<<< Updated upstream
-=======
-body {
-	background: #1b1e24;
-  text-align: center;
-	font-family: Arial, sans-serif;
-	font-size: 14px;
-	line-height: 20px;
-}
->>>>>>> Stashed changes
+
 
 input {
 	font-size: 1em;
