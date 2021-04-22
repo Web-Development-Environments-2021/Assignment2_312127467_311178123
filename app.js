@@ -12,7 +12,9 @@ var movedown;
 var moveleft;
 var moveright;
 var food_remain;
+var total_food;
 var time_countdown;
+var time_left;
 var monster_quantity;
 var color1;
 var color2;
@@ -189,7 +191,7 @@ function showPage(page){
 	}
 
 	else if(page === "about" | page === "game"){
-		$(document.body).css( "background", "gray" );
+		$(document.body).css( "background", "lightblue" );
 	}
 	else{
 		setBackroundImageForBody("./pictures/back5.jpg")
@@ -373,7 +375,7 @@ function updateOnChange(){
 }
 
 function startGame(){
-
+	
 	showPage("game");
 	Start();
 
@@ -385,6 +387,7 @@ function initGameSettings(){
 	moveleft = $.trim($('#left').val());
 	moveright = $.trim($('#right').val());
 	food_remain = $.trim($('#ball_quantity').val());
+	total_food = food_remain;
 	time_countdown = $.trim($('#time_quantity').val());
 	monster_quantity = $.trim($('#monster_quantity').val());
 
@@ -511,7 +514,7 @@ function GetKeyPressed() {
 function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
-	lblTime.value = time_elapsed;
+	lblTime.value = time_left;
 	for (var i = 0; i < 10; i++) {
 		for (var j = 0; j < 10; j++) {
 			var center = new Object();
@@ -570,21 +573,27 @@ function UpdatePosition() {
 	}
 	board[shape.i][shape.j] = 2;
 	var currentTime = new Date();
-	time_elapsed = (currentTime - start_time) / 1000;
-	//time_elapsed = (start_time - currentTime) / 1000;
-	if (score >= 20 && time_elapsed <= 10) {
+	time_elapsed = Math.round((currentTime - start_time) / 1000,0);
+	time_left = time_countdown - time_elapsed
+	if (time_left <= 10) {
+		pac_color = "red";
+		$("#lblTime").css("background-color","red")
+	}
+	else if (score >= total_food/2) {
 		pac_color = "green";
 	}
-	if (score == $("#BallNumber").value) {
+
+	if (score == total_food) {
 		window.clearInterval(interval);
 		window.alert("Game completed");
+		showPage("configuration");
 	}
-	else if (time_elapsed <= 0) {
+
+	else if (time_left <= 0) {
 		window.clearInterval(interval);
-		lblTime.value = 0;
 		window.alert("Game Over");
 		window.alert("Your Score is: " + score)
-
+		showPage("configuration");
 	} 
 	else {
 		Draw();
