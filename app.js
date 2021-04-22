@@ -188,7 +188,7 @@ function showPage(page){
 		$(document.body).css( "background", "white" );
 	}
 
-	else if(page === "about"){
+	else if(page === "about" | page === "game"){
 		$(document.body).css( "background", "gray" );
 	}
 	else{

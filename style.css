@@ -245,19 +245,25 @@ p:hover {
 .configs{
   display: absolute;
   height: 40px;
-  margin-top: 50px;
   margin-left: 0px;
 }
 
 #canvas{
   margin-left: 15%;
-
 }
+
+#score{
+  margin-top: 5%;
+}
+
 #game{
   margin-top: 20px;
   margin-bottom: 20px;
-  display: absolute;
-}
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  flex-wrap: nowrap;
+  justify-content: center;  }
 
 html {
   box-sizing: border-box;
