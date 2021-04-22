@@ -375,7 +375,7 @@ function updateOnChange(){
 }
 
 function startGame(){
-	
+
 	showPage("game");
 	Start();
 
@@ -483,7 +483,7 @@ function Start() {
 		},
 		false
 	);
-	interval = setInterval(UpdatePosition, 250);
+	interval = setInterval(UpdatePosition, 200); //250
 }
 
 function findRandomEmptyCell(board) {
@@ -511,6 +511,56 @@ function GetKeyPressed() {
 	}
 }
 
+function drawRightPacman(x,y){
+	context.beginPath();
+	context.arc(x, y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+	context.lineTo(x, y);
+	context.fillStyle = pac_color; //color
+	context.fill();
+	context.beginPath();
+	context.arc(x + 5, y - 15, 5, 0, 2 * Math.PI); // circle
+	context.fillStyle = "black"; //color
+	context.fill();
+}
+
+function drawLeftPacman(x,y){
+	context.beginPath();
+	context.arc(x, y, 30, 1.15 * Math.PI , 0.85 * Math.PI); // half circle
+	context.lineTo(x, y);
+	context.fillStyle = pac_color; //color
+	context.fill();
+	context.beginPath();
+	context.arc(x - 5, y - 15, 5,2 * Math.PI, 0); // circle
+	context.fillStyle = "black"; //color
+	context.fill();
+}
+
+// NOT READYY
+function drawTopPacman(x,y){
+	context.beginPath();
+	context.arc(x, y, 30, 0.85 * Math.PI , 0.15 * Math.PI); // half circle
+	context.lineTo(x, y);
+	context.fillStyle = pac_color; //color
+	context.fill();
+	context.beginPath();
+	context.arc(x - 5, y - 15, 5,2 * Math.PI, 0); // circle
+	context.fillStyle = "black"; //color
+	context.fill();
+}
+
+// NOT READYY
+function drawDownPacman(x,y){
+	context.beginPath();
+	context.arc(x, y, 30, 1.15 * Math.PI , 0.85 * Math.PI); // half circle
+	context.lineTo(x, y);
+	context.fillStyle = pac_color; //color
+	context.fill();
+	context.beginPath();
+	context.arc(x - 5, y - 15, 5,2 * Math.PI, 0); // circle
+	context.fillStyle = "black"; //color
+	context.fill();
+}
+
 function Draw() {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
@@ -521,15 +571,16 @@ function Draw() {
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
 			if (board[i][j] == 2) {
-				context.beginPath();
-				context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-				context.lineTo(center.x, center.y);
-				context.fillStyle = pac_color; //color
-				context.fill();
-				context.beginPath();
-				context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
-				context.fill();
+				drawTopPacman(center.x,center.y);
+				// context.beginPath();
+				// context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
+				// context.lineTo(center.x, center.y);
+				// context.fillStyle = pac_color; //color
+				// context.fill();
+				// context.beginPath();
+				// context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
+				// context.fillStyle = "black"; //color
+				// context.fill();
 			} else if (board[i][j] == 1) {
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
@@ -585,12 +636,14 @@ function UpdatePosition() {
 
 	if (score == total_food) {
 		window.clearInterval(interval);
+		$("#lblTime").css("background-color","white")
 		window.alert("Game completed");
 		showPage("configuration");
 	}
 
 	else if (time_left <= 0) {
 		window.clearInterval(interval);
+		$("#lblTime").css("background-color","white")
 		window.alert("Game Over");
 		window.alert("Your Score is: " + score)
 		showPage("configuration");
