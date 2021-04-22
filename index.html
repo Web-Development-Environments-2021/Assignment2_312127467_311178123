@@ -9,14 +9,12 @@
 	</head>
 
 	<body>
-
 		<div class="menu">
-  
 			<div class="links">
 				<a id="menu_welcome" onclick="showPage('welcome')">Welcome</a>
 				<a id="menu_login" onclick="showPage('login')">Log In</a>
 				<a id="menu_register" onclick="showPage('registration')">Register</a>
-				<a id="menu_about" onclick="showPage('about')">About</a>
+				<a id="menu_about" onclick="displayAboutModalScreen()">About</a>
 				<div class="logo">
 					<img src="./pictures/logo.png" width=30, height=30>
 				  </div>
@@ -107,41 +105,62 @@
 			</form>
 		</div>
 		
-		<div id="about">
-		<div class="about-section">
-			<h1>About Us Page</h1>
-			<p>We are the CEOs and Founders of this Pacman game company</p>
-			<p>We are both third year information engineering students</p>
-		  </div>
-		  
-		  <h2 style="text-align:center">Our Team</h2>
-		  <div class="row" id="about">
 
-		  
-			<div class="column">
-			  <div class="card">
-				<img src="./pictures/team/guy.jpg" alt="Mike" style="width:100%">
-				<div class="container">
-				  <h2>Guy</h2>
-				  <p class="title">Frontend Developer</p>
-				  <p>Love sport, cooking, netflix & chill</p>
-				</div>
-			  </div>
+		<!-- The Modal -->
+		<div id="aboutModal" class="modal">
+
+			<!-- Modal content -->
+			<div class="modal-content">
+			<div class="modal-header">
+				<span id="close_button" class="close">&times;</span>
+				<h2> Assignment 2 of Web developing course </h2>
 			</div>
-		  
-			<div class="column">
-			  <div class="card">
-				<img src="./pictures/team/eden.jpg" alt="John" style="width:100%">
-				<div class="container">
-				  <h2>Eden</h2>
-				  <p class="title">Frontend Developer</p>
-				  <p>Love basketball and playing the guitar</p>
-				</div>
+			<div class="modal-body">
+			<div class="about-section">
+				<h1>About Us Page</h1>
+				<ul>
+					<li>No Template was Used</li>
+					<li>JQuery plugins that were used:
+						<ul>
+							<li>https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js</li>
+							<li>https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/additional-methods.js</li>
+						  </ul>
+					</li>
+					<li>Problems that we encountered:
+						<ul>
+							<li>Drawing the pacman for each direction</li>
+							<li>Using the JQuery plugins</li>
+						  </ul>
+					</li>
+				  </ul>
 			  </div>
-			</div>
-		  </div>
-		</div>
+			  
+			  <h2 style="text-align:center">Our Team</h2>
+			  <div class="row" id="about">
 	
+			  
+				  <div class="card">
+					<img src="./pictures/team/guy.jpg" alt="Guy Shimony" style="width:100%">
+					<div class="container">
+					  <h2>Guy Shimony</h2>
+					</div>
+				  </div>
+			  
+				  <div class="card">
+					<img src="./pictures/team/eden.jpg" alt="Eden Yavin" style="width:100%">
+					<div class="container">
+					  <h2>Eden Yavin</h2>
+					</div>
+				  </div>
+			  </div>		
+	
+			</div>
+			<div class="modal-footer">
+				<h3>This pacman game was designed by Eden Yavin and Guy shimony</h3>
+			</div>
+			</div>
+		
+		</div>
 
 
 		<div id="score">
@@ -163,7 +182,7 @@
 			<canvas id="canvas" height="600" width="600"></canvas>
 		</div>
 		<footer>
-			If you thinking your self "whom should I say thank you for this AWESOME designed pacman ?", The answer is: Aviv Amsellem and Yarden Curiel. Please Contact us at avivams@post.bgu.ac.il, curiey@post.bgu.ac.il.<br>Note: Please don't really contact us, we have to write this for the assignment. Thank you for the understanding.
+			This pacman game was done by Eden Yavin and Guy shimony
 		</footer>
 	</body>
 </html>

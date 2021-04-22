@@ -28,6 +28,26 @@ $(document).ready(function() {
 	updateOnChange();
 	showPage("welcome");
 
+	// When the user click the X button close the modal
+	$(".close").eq(0).on("click", function(e) {
+		console.log("hey")
+		$("#myModal").hide();
+	  });
+	
+	// When the user clicks anywhere outside of the modal, close it
+	window.onclick = function(event) {
+		if (event.target == $("#myModal")[0]) {
+			$("#myModal").hide();
+		}
+	}
+	// When the user clicks the Escape button, close the modal.
+	$(document).on('keydown', function(event) {
+		if (event.key == "Escape") {
+			$("#myModal").hide();
+		}
+	});
+
+	/* Validation plugins was used to set up rules for the registreation and login page */
 	$('#reg_form').validate({
 		
 		rules:{
@@ -101,8 +121,7 @@ $(document).ready(function() {
 			},
 			submitHandler:	(form) => {showPage('configuration')}
 			})
-
-
+	
 	//Start();
 });
 
@@ -152,9 +171,18 @@ $.validator.addMethod("isRegistered", function(value, element){
     };
 },"No such user exists in the system");
 
+validPassword = (passowrd) => {
+	if( !(/\d/.test(passowrd)&/[a-z]/i.test(passowrd))){
+		return false;
+	}
+		return true;
+}
+
 /* ---------------------------------------*/
 
 
+
+/* ----------- Screen switching methods ---------- */
 function showPage(page){
 	if(page === "about"){
 		$(document.body).css( "background", "white" );
@@ -186,16 +214,16 @@ function hideDivs(){
 	$("#registration").hide();
 	$("#configuration").hide();
 	$("#login").hide();
-	$("#about").hide();
 
 }
 
-validPassword = (passowrd) => {
-	if( !(/\d/.test(password_val)&/[a-z]/i.test(password_val))){
-		return false;
-	}
-		return true;
+function displayAboutModalScreen(){ 
+	$("#aboutModal").show()
 }
+
+/* ----------- --- ---------- */
+
+
 
 function randomInteger(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
