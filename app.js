@@ -198,8 +198,7 @@ function showPage(page){
 	hideDivs();
     $('#' + page).show();
 	if(page == 'game'){
-		$('#time').show();
-		$('#score').show();
+		$('#game_score_time_live').show();
 	}
 }
 
@@ -211,9 +210,8 @@ setBackroundImageForBody = (picture_path) => {
 }
 
 function hideDivs(){
-	$("#time").hide();
 	$("#welcome").hide();
-	$("#score").hide();
+	$("#game_score_time_live").hide();
 	$("#game").hide();
 	$("#registration").hide();
 	$("#configuration").hide();
