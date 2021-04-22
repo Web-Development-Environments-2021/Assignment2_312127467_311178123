@@ -31,19 +31,19 @@ $(document).ready(function() {
 	// When the user click the X button close the modal
 	$(".close").eq(0).on("click", function(e) {
 		console.log("hey")
-		$("#myModal").hide();
+		$("#aboutModal").hide();
 	  });
 	
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
 		if (event.target == $("#myModal")[0]) {
-			$("#myModal").hide();
+			$("#aboutModal").hide();
 		}
 	}
 	// When the user clicks the Escape button, close the modal.
 	$(document).on('keydown', function(event) {
 		if (event.key == "Escape") {
-			$("#myModal").hide();
+			$("#aboutModal").hide();
 		}
 	});
 
@@ -197,6 +197,10 @@ function showPage(page){
 
 	hideDivs();
     $('#' + page).show();
+	if(page == 'game'){
+		$('#time').show();
+		$('#score').show();
+	}
 }
 
 setBackroundImageForBody = (picture_path) => {
@@ -338,6 +342,36 @@ function updateOnChange(){
 		$("#MoveRight").val(moveright);
 	})
 
+	$("#ball_quantity").on("change", function(){
+		food_remain = $("#ball_quantity").val();
+		$("#BallNumber").val(food_remain);
+	})
+
+	$("#time_quantity").on("change", function(){
+		time_countdown = $("#time_quantity").val();
+		$("#TimeLeft").val(time_countdown);
+	})
+
+	$("#monster_quantity").on("change", function(){
+		monster_quantity = $("#monster_quantity").val();
+		$("#Monsters").val(monster_quantity);
+	})
+
+	$("#color1").on("change", function(){
+		color1 = $("#color1").val();
+		$("#5pointballscolor").val(color1);
+	})
+
+	$("#color2").on("change", function(){
+		color2 = $("#color2").val();
+		$("#15pointballscolor").val(color2);
+	})
+
+	$("#color3").on("change", function(){
+		color3 = $("#color3").val();
+		$("#20pointballscolor").val(color3);
+	})
+
 }
 
 function startGame(){
@@ -360,9 +394,6 @@ function initGameSettings(){
 	color2 = $.trim($('#color2').val());
 	color3 = $.trim($('#color3').val());
 
-	// $(document).keydown(function(event){
-		
-	// })
 }
 
 function limit(element)
@@ -387,6 +418,18 @@ function Start() {
 	$("#MoveDown").val(movedown);
 	$("#MoveLeft").val(moveleft);
 	$("#MoveRight").val(moveright);
+
+	$("#BallNumber").val(food_remain);
+	$("#TimeLeft").val(time_countdown);
+	$("#Monsters").val(monster_quantity);
+
+	$("#5pointballscolor").val(color1);
+	$("#15pointballscolor").val(color2);
+	$("#20pointballscolor").val(color3);
+
+	$("#5pointballs").val(Math.round(food_remain*0.6));
+	$("#15pointballs").val(Math.round(food_remain*0.3));
+	$("#20pointballs").val(Math.round(food_remain*0.1));
 
 	var pacman_remain = 1;
 	start_time = new Date();
@@ -533,10 +576,18 @@ function UpdatePosition() {
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
-	if (score == 50) {
+	if (score == $("#BallNumber").value) {
 		window.clearInterval(interval);
 		window.alert("Game completed");
-	} else {
+	}
+	else if (time_elapsed >= time_countdown) {
+		window.clearInterval(interval);
+		lblTime.value = 0;
+		window.alert("Game Over");
+		window.alert("Your Score is: " + score)
+
+	} 
+	else {
 		Draw();
 	}
 }
