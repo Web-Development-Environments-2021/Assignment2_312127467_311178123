@@ -571,6 +571,7 @@ function UpdatePosition() {
 	board[shape.i][shape.j] = 2;
 	var currentTime = new Date();
 	time_elapsed = (currentTime - start_time) / 1000;
+	//time_elapsed = (start_time - currentTime) / 1000;
 	if (score >= 20 && time_elapsed <= 10) {
 		pac_color = "green";
 	}
@@ -578,7 +579,7 @@ function UpdatePosition() {
 		window.clearInterval(interval);
 		window.alert("Game completed");
 	}
-	else if (time_elapsed >= time_countdown) {
+	else if (time_elapsed <= 0) {
 		window.clearInterval(interval);
 		lblTime.value = 0;
 		window.alert("Game Over");

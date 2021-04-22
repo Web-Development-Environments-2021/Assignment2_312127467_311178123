@@ -169,6 +169,17 @@ input {
 	width: 204px;
 }
 
+#game input[type="text"],[type="color"]{
+  background-color: #fff;
+	border-top: 2px solid #2c90c6;
+	border-right: 1px solid #000;
+	border-left: 1px solid #000;
+	border-radius: 5px 5px 0 0;
+	color: #363636;
+	padding-left: 36px;
+	width: 204px;
+}
+
 .screen_input input[type="date"] {
 	background-color: #fff;
 	border-top: 2px solid #2c90c6;
