@@ -25,7 +25,6 @@ var monster_quantity;
 var color1;
 var color2;
 var color3;
-
 var last_key_pressed = 4;
 
 var food_5_points_color;
@@ -34,12 +33,12 @@ var food_20_points_color;
 
 /* ------------------- Enums ------------------------- */
 const board_cell_type = {
-	empty_cell: '0',
-	food_5_points: '1',
-	food_15_points: '3',
-	food_20_points: '5',
-	Pacman: '2',
-	Wall: '4',
+	empty_cell: 0,
+	food_5_points: 1,
+	food_15_points: 2,
+	food_20_points: 3,
+	Pacman: 4,
+	Wall: 5,
 };
 
 
@@ -400,25 +399,28 @@ function Start() {
 			) {
 				board[i][j] = board_cell_type.Wall;
 			} else {
-				var randomNum = Math.random();
+				//var randomNum = Math.random();
 				// if (randomNum <= (1.0 * food_remain) / cnt) {
 				// 	food_remain--;
 				// 	board[i][j] = board_cell_type.food_5_points;
+				// //}
+				//  if (randomNum < (1.0 * (pacman_remain )) / cnt) {
+					// shape.i = i;
+					// shape.j = j;
+				// 	pacman_remain--;
+				// 	board[i][j] = board_cell_type.Pacman;
+				board[i][j] = board_cell_type.empty_cell;
+
+				//} //else {
+					//board[i][j] = board_cell_type.empty_cell;
 				//}
-				 if (randomNum < (1.0 * (pacman_remain )) / cnt) {
-					shape.i = i;
-					shape.j = j;
-					pacman_remain--;
-					board[i][j] = board_cell_type.Pacman;
-				} else {
-					board[i][j] = board_cell_type.empty_cell;
-				}
 				cnt--;
 			}
 		}
-	}
 
+	}
 	placeFoodOnBoard(board)
+	placePacmanOnBoard(board)
 
 	keysDown = {};
 	addEventListener(
@@ -471,43 +473,66 @@ function GetKeyPressed() {
 	}
 	return 0;
 }
+/* ------------ Place Objects On Board Methods -------------- */
+function placePacmanOnBoard(board){
+	let empty_cell = findRandomEmptyCell(board)
+	board[empty_cell[0]][empty_cell[1]] = board_cell_type.Pacman
+	shape.i = empty_cell[0];
+	shape.j = empty_cell[1];
+}
+
 
 function placeFoodOnBoard(board){
+	console.log(board)
+
 	let number_of_food_5_points = Math.floor(0.6 * total_food);
 	let number_of_food_15_points = Math.floor(0.3 * total_food);
 	let number_of_food_20_points = Math.floor(0.1 * total_food);
 	
-	var emptyCell;
+	var empty_cell = findRandomEmptyCell(board)
+	let number_of_food = total_food
 	
-
-	while (number_of_food_5_points > 0){
-		emptyCell = findRandomEmptyCell(board);
-
-		if (board[emptyCell[0]][emptyCell[1]] == board_cell_type.empty_cell){
-			board[emptyCell[0]][emptyCell[1]] = board_cell_type.food_5_points
-			number_of_food_5_points--
+	for (var i = 0; i < 10; i++) {
+		for (var j = 0; j < 10; j++) {
+			
+			if(board[i][j] == board_cell_type.empty_cell && number_of_food > 0){
+				board[i][j] = randomInteger(1,3);
+				number_of_food--;
+			}
 		}
+	}
+	console.log(board)
+	/* 
+	while (number_of_food_5_points > 0){
+		// emptyCell = findRandomEmptyCell(board);
+		
+		if( board[empty_cell[0]][empty_cell[1]] == board_cell_type.empty_cell){
+			board[empty_cell[0]][empty_cell[1]] = board_cell_type.food_5_points;
+			number_of_food_5_points--;
+		}
+		emptyCell = findRandomEmptyCell(board);
 	}
 
 	while (number_of_food_15_points > 0){
-		emptyCell = findRandomEmptyCell(board);
 
-		if (board[emptyCell[0]][emptyCell[1]] == board_cell_type.empty_cell){
-			board[emptyCell[0]][emptyCell[1]] = board_cell_type.food_15_points
-			number_of_food_15_points--
+		if(board[empty_cell[0]][empty_cell[1]] == board_cell_type.empty_cell){
+			board[empty_cell[0]][empty_cell[1]] = board_cell_type.food_15_points;
+			number_of_food_15_points--;
 		}
+		emptyCell = findRandomEmptyCell(board);
 	}
 
-	
 	while (number_of_food_20_points > 0){
-		emptyCell = findRandomEmptyCell(board);
 
-		if (board[emptyCell[0]][emptyCell[1]] == board_cell_type.empty_cell){
-			board[emptyCell[0]][emptyCell[1]] = board_cell_type.food_20_points
-			number_of_food_20_points--
+		if( board[empty_cell[0]][empty_cell[1]] == board_cell_type.empty_cell){
+			board[empty_cell[0]][empty_cell[1]] = board_cell_type.food_20_points;
+			number_of_food_20_points--;
 		}
+		emptyCell = findRandomEmptyCell(board);
 	}
+	*/
 }
+/* ---------------------------------------------------------------------- */
 
 function drawRightPacman(x,y){
 	context.beginPath();
@@ -632,7 +657,7 @@ function Draw(Direction) {
 			drawGhost(i,j);
 			if (Direction == '0')
 				Direction = last_key_pressed;
-			if (board[i][j] == 2) {				
+			if (board[i][j] == board_cell_type.Pacman) {				
 				if (Direction == '1')
 					drawTopPacman(center.x,center.y);
 				else if (Direction == '2')
@@ -682,22 +707,22 @@ function UpdatePosition() {
 
 	var x = GetKeyPressed();
 	if (x == 1) {
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
+		if (shape.j > 0 && board[shape.i][shape.j - 1] != board_cell_type.Wall) {
 			shape.j--;
 		}
 	}
 	if (x == 2) {
-		if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {
+		if (shape.j < 9 && board[shape.i][shape.j + 1] != board_cell_type.Wall) {
 			shape.j++;
 		}
 	}
 	if (x == 3) {
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {
+		if (shape.i > 0 && board[shape.i - 1][shape.j] != board_cell_type.Wall) {
 			shape.i--;
 		}
 	}
 	if (x == 4) {
-		if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {
+		if (shape.i < 9 && board[shape.i + 1][shape.j] != board_cell_type.Wall) {
 			shape.i++;
 		}
 	}
@@ -716,7 +741,7 @@ function UpdatePosition() {
 		normalized_score  = normalized_score + 1;
 	}
 
-	board[shape.i][shape.j] = 2;
+	board[shape.i][shape.j] = board_cell_type.Pacman;
 	var currentTime = new Date();
 	time_elapsed = Math.round((currentTime - start_time) / 1000,0);
 	time_left = time_countdown - time_elapsed
