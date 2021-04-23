@@ -20,7 +20,7 @@ var color1;
 var color2;
 var color3;
 
-
+var last_key_pressed = 4;
 
 
 $(document).ready(function() {
@@ -498,17 +498,22 @@ function findRandomEmptyCell(board) {
 
 function GetKeyPressed() {
 	if (keysDown[38]) {
+		last_key_pressed = 1;
 		return 1;
 	}
 	if (keysDown[40]) {
+		last_key_pressed = 2;
 		return 2;
 	}
 	if (keysDown[37]) {
+		last_key_pressed = 3;
 		return 3;
 	}
 	if (keysDown[39]) {
+		last_key_pressed = 4;
 		return 4;
 	}
+	return 0;
 }
 
 function drawRightPacman(x,y){
@@ -535,33 +540,31 @@ function drawLeftPacman(x,y){
 	context.fill();
 }
 
-// NOT READYY
 function drawTopPacman(x,y){
 	context.beginPath();
-	context.arc(x, y, 30, 0.85 * Math.PI , 0.15 * Math.PI); // half circle
+	context.arc(x, y, 30, 1.70 * Math.PI , 1.30 * Math.PI); // half circle
 	context.lineTo(x, y);
 	context.fillStyle = pac_color; //color
 	context.fill();
 	context.beginPath();
-	context.arc(x - 5, y - 15, 5,2 * Math.PI, 0); // circle
-	context.fillStyle = "black"; //color
+	context.arc(x - 12, y , 5,2 * Math.PI, 0); // circle
+	context.fillStyle = "black"; //color	
 	context.fill();
 }
 
-// NOT READYY
 function drawDownPacman(x,y){
 	context.beginPath();
-	context.arc(x, y, 30, 1.15 * Math.PI , 0.85 * Math.PI); // half circle
+	context.arc(x, y, 30, 0.65 * Math.PI , 0.35 * Math.PI); // half circle
 	context.lineTo(x, y);
 	context.fillStyle = pac_color; //color
 	context.fill();
 	context.beginPath();
-	context.arc(x - 5, y - 15, 5,2 * Math.PI, 0); // circle
+	context.arc(x + 12, y , 5,2 * Math.PI, 0); // circle
 	context.fillStyle = "black"; //color
 	context.fill();
 }
 
-function Draw() {
+function Draw(Direction) {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
 	lblTime.value = time_left;
@@ -570,8 +573,18 @@ function Draw() {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
-			if (board[i][j] == 2) {
-				drawTopPacman(center.x,center.y);
+			if (Direction == '0')
+				Direction = last_key_pressed;
+			if (board[i][j] == 2) {				
+				if (Direction == '1')
+					drawTopPacman(center.x,center.y);
+				else if (Direction == '2')
+					drawDownPacman(center.x,center.y);
+				else if (Direction == '3')
+					drawLeftPacman(center.x,center.y);
+				else if (Direction == '4')
+					drawRightPacman(center.x,center.y);
+				
 				// context.beginPath();
 				// context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
 				// context.lineTo(center.x, center.y);
@@ -649,6 +662,6 @@ function UpdatePosition() {
 		showPage("configuration");
 	} 
 	else {
-		Draw();
+		Draw(x);
 	}
 }
