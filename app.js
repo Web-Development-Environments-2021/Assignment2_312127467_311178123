@@ -8,7 +8,12 @@ var start_time;
 var time_elapsed;
 var interval;
 // Game vars
-var moveupkey;
+var moveup_code = 38;
+var movedown_code = 40;
+var moveleft_code = 37;
+var moveright_code = 39;
+
+var moveup;
 var movedown;
 var moveleft;
 var moveright;
@@ -309,6 +314,25 @@ function updateOnChange(){
 
 }
 
+function updateUpKey(event, element) {
+	moveup_code = event.keyCode;
+	limit(element);
+}
+
+function updateDownKey(event,element) {
+	movedown_code = event.keyCode;
+	limit(element);
+}
+
+function updateLeftKey(event,element) {
+	moveleft_code = event.keyCode;
+	limit(element);
+}
+
+function updateRightKey(event,element) {
+	moveright_code = event.keyCode;
+	limit(element);
+}
 
 function initGameSettings(){
 	moveup = $.trim($('#up').val());
@@ -363,7 +387,6 @@ function Start() {
 
 	var pacman_remain = 1;
 	start_time = new Date();
-
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
@@ -426,19 +449,23 @@ function findRandomEmptyCell(board) {
 }
 
 function GetKeyPressed() {
-	if (keysDown[38]) {
+	if(keysDown[moveup_code]){
+	// if (keysDown[38]) {
 		last_key_pressed = 1;
 		return 1;
 	}
-	if (keysDown[40]) {
+	if(keysDown[movedown_code]){
+	// if (keysDown[40]) {
 		last_key_pressed = 2;
 		return 2;
 	}
-	if (keysDown[37]) {
+	if(keysDown[moveleft_code]){
+	// if (keysDown[37]) {
 		last_key_pressed = 3;
 		return 3;
 	}
-	if (keysDown[39]) {
+	if(keysDown[moveright_code]){
+	// if (keysDown[39]) {
 		last_key_pressed = 4;
 		return 4;
 	}
@@ -530,6 +557,48 @@ function drawDownPacman(x,y){
 	context.fill();
 }
 
+function drawGhost(i,j){
+	var center = new Object();
+	center.x = i * 60 + 30;
+	center.y = j * 60 + 30;
+	if(board[i][j]==100 || board[i][j]==101 || board[i][j]==102 || board[i][j]==103){
+		context.beginPath();
+		if(board[i][j]==100)
+			context.fillStyle = "#99ff66";
+		if(board[i][j]==101)
+			context.fillStyle = "pink";
+		if(board[i][j]==102)
+			context.fillStyle = "#4ddbff";
+		if(board[i][j]==103)
+			context.fillStyle = "#ffcc66";
+		context.arc(center.x , center.y, 20, 1*Math.PI, 2* Math.PI);
+		context.lineTo(center.x+20, center.y+15);
+		context.arc(center.x + 20 / 4 + 10, center.y + 15, 20 * 0.25, 0, Math.PI);
+		context.arc(center.x + 20 / 4  , center.y + 15, 20 * 0.25, 0, Math.PI);
+		context.arc(center.x + 20 / 4 -  10, center.y + 15, 20 * 0.25, 0, Math.PI);
+		context.arc(center.x + 20 / 4 -20, center.y + 15, 20 * 0.25, 0, Math.PI);
+		context.closePath();
+		context.fill();
+		context.strokeStyle = "black";
+		context.stroke();
+
+		context.beginPath();
+		context.fillStyle = "white"; //color
+		context.arc(center.x + 10, center.y -5, 5, 0, 2 * Math.PI);
+		context.fill();
+		context.beginPath();
+		context.arc(center.x - 10, center.y -5, 5, 0, 2 * Math.PI);
+		context.fill();
+
+		context.beginPath();
+		context.fillStyle = "black"; //color
+		context.arc(center.x + 10, center.y -5, 3, 0, 2 * Math.PI);
+		context.fill();
+		context.beginPath();
+		context.arc(center.x - 10, center.y -5, 3, 0, 2 * Math.PI);
+		context.fill();
+	}
+}
 function drawFood(x,y,color, type){
 	if (type == board_cell_type.food_5_points){
 		context.beginPath();
@@ -560,6 +629,7 @@ function Draw(Direction) {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
+			drawGhost(i,j);
 			if (Direction == '0')
 				Direction = last_key_pressed;
 			if (board[i][j] == 2) {				
@@ -659,17 +729,17 @@ function UpdatePosition() {
 	}
 
 	if (normalized_score == total_food) {
-		window.clearInterval(interval);
 		$("#lblTime").css("background-color","white")
 		window.alert("Game completed");
+		resetGame();
 		showPage("configuration");
 	}
 
 	else if (time_left <= 0) {
-		window.clearInterval(interval);
 		$("#lblTime").css("background-color","white")
 		window.alert("Game Over");
 		window.alert("Your Score is: " + score)
+		resetGame();
 		showPage("configuration");
 	} 
 	else {
@@ -681,4 +751,12 @@ function UpdatePosition() {
 function startGame(){
 	showPage("game");
 	Start();
+}
+
+function resetGame(){
+	window.clearInterval(interval);
+	lblScore.value = 0;
+	score = 0;
+	normalized_score = 0;
+	lblTime.value = time_countdown;
 }

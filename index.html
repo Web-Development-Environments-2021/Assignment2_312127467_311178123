@@ -63,42 +63,47 @@
 			<p class="registration_title" id="config_title">Game Configuration Set Up Page</p>
 			
 			<form method="post">
-			<label for="quantity" style="color: white;">How would you like to move your character?</label>
+			<!-- <label for="quantity" style="color: white;">How would you like to move your character?</label> -->
+			<h2 style="color: white;">How would you like to move your character?</h2>
+
+			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowkeyUp" onkeydown="updateUpKey(event, this);" onkeyup="limit(this);"> </br>
+			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowkeyDown" onkeydown="updateDownKey(event,this);" onkeyup="limit(this);"></br>
+			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowkeyLeft" onkeydown="updateLeftKey(event,this);" onkeyup="limit(this);"> </br>
+			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowkeyRight" onkeydown="updateRightKey(event,this);" onkeyup="limit(this);"> </br>
 			</br>
 
-			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowkeyUp" onkeydown="limit(this);" onkeyup="limit(this);"> </br>
-			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowkeyDown" onkeydown="limit(this);" onkeyup="limit(this);"></br>
-			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowkeyLeft" onkeydown="limit(this);" onkeyup="limit(this);"> </br>
-			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowkeyRight" onkeydown="limit(this);" onkeyup="limit(this);"> </br>
-			</br>
 
-
-			<label for="quantity" style="color: white;">How many food balls would you like in the game?</br> (Between 50 to 90):</label>
-			</br>
+			<!-- <label for="quantity" style="color: white;">How many food balls would you like in the game?</br> (Between 50 to 90):</label> -->
+			<h2 style="color: white;">How many food balls would you like in the game?</br>(Between 50 to 90):</h2>
 			<input type="number" id="ball_quantity" name="quantity" min="50" max="90" value="50"></br>
-			<label for="quantity" style="color: white;">Game Duration</br> (Atleast 60 seconds):</label>
-			</br>
+			<!-- <label for="quantity" style="color: white;">Game Duration</br> (Atleast 60 seconds):</label> -->
+			<h2 style="color: white;">Game Duration</br> (Atleast 60 seconds):</h2>
 			<input type="number" id="time_quantity" name="quantity" min="60" value="60"></br>
-			<label for="quantity" style="color: white;">Monsters</br> (Betweem 1 to 4):</label>
-			</br>
+			<!-- <label for="quantity" style="color: white;">Monsters</br> (Betweem 1 to 4):</label> -->
+			<h2 style="color: white;">Monsters</br>(Betweem 1 to 4):</h2>
+
 			<input type="number" id="monster_quantity" name="quantity" min="1" max="4" value="2"></br>
 
 			</br>
 			</br>
-			<label for="favcolor" style="color: white;">Select your favorite color for each ball type:</label></br>
+			<!-- <label for="favcolor" style="color: white;">Select your favorite color for each ball type:</label></br> -->
+			<h2 style="color: white;">Select your favorite color for each ball type:</h2>
 
-			<label for="favcolor" style="color: white;">5 Point Balls:</label></br>
-			<input type="color" id="color1" name="favcolor" value="#ff0000"></br>
+			<!-- <label for="favcolor" style="color: white;">5 Point Balls:</label></br> -->
+			<h2 style="color: white;">5 Point Balls:</h2>
+			<input type="color" id="color1" name="favcolor" value="#ff0000">
 
-			<label for="favcolor" style="color: white;">15 Point Balls:</label></br>
-			<input type="color" id="color2" name="favcolor" value="#008000"></br>
+			<!-- <label for="favcolor" style="color: white;">15 Point Balls:</label></br> -->
+			<h2 style="color: white;">15 Point Balls:</h2>
+			<input type="color" id="color2" name="favcolor" value="#008000">
 
-			<label for="favcolor" style="color: white;">25 Point Balls:</label></br>
-			<input type="color" id="color3" name="favcolor" value="#0000FF"></br>
+			<!-- <label for="favcolor" style="color: white;">25 Point Balls:</label></br> -->
+			<h2 style="color: white;">25 Point Balls:</h2>
+			<input type="color" id="color3" name="favcolor" value="#0000FF">
 
 			</br>
-		</br>
-	</br>
+			</br>
+			</br>
 			<input type="button" onclick="startGame()" value="START GAME"></br>
 			<input type="button" onclick="RandomConfig()" value="RANDOM">
 
@@ -177,7 +182,7 @@
 			</div>
 		</div>
 	
-		<!-- Game widnow -->
+		<!-- Game window -->
 		<div id="game">
 			<div class = "configs">
 			<h2 style = "color: white; ">CONFIGURATIONS</h2>
