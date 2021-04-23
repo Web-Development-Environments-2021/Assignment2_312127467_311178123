@@ -22,6 +22,30 @@ var color3;
 
 var last_key_pressed = 4;
 
+var food_5_points_color;
+var food_15_points_color;
+var food_20_points_color;
+
+/* ------------------- Enums ------------------------- */
+const board_cell_type = {
+	empty_cell: '0',
+	food_5_points: '1',
+	food_15_points: '3',
+	food_20_points: '5',
+	Pacman: '2',
+	Wall: '4',
+};
+/* ------------------- Enums ------------------------- */
+const board_cell_type = {
+	empty_cell: '0',
+	food_5_points: '1',
+	food_15_points: '3',
+	food_20_points: '5',
+	Pacman: '2',
+	Wall: '4',
+};
+
+/* ------------------------------------------------- */
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
@@ -186,12 +210,9 @@ validPassword = (passowrd) => {
 
 /* ----------- Screen switching methods ---------- */
 function showPage(page){
-	if(page === "about"){
-		$(document.body).css( "background", "white" );
-	}
 
-	else if(page === "about" | page === "game"){
-		$(document.body).css( "background", "lightblue" );
+	if(page === "game"){
+		$(document.body).css( "background", "white" );
 	}
 	else{
 		setBackroundImageForBody("./pictures/back5.jpg")
@@ -225,10 +246,10 @@ function displayAboutModalScreen(){
 	$("#aboutModal").show()
 }
 
-/* ----------- --- ---------- */
+/* -------------------------- */
 
 
-
+/* ----------Random Functions------------ */
 function randomInteger(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -244,8 +265,9 @@ function RandomConfig(){
 	$('#color1').val(randomColor());
 	$('#color2').val(randomColor());
 	$('#color3').val(randomColor());
-
 }
+/* ------------------------------------------ */
+
 // function validateEmail(email) {
 // 	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 // 	return re.test(String(email).toLowerCase());
@@ -358,13 +380,13 @@ function updateOnChange(){
 	})
 
 	$("#color1").on("change", function(){
-		color1 = $("#color1").val();
-		$("#5pointballscolor").val(color1);
+		food_5_points_color = $("#color1").val();
+		$("#5pointballscolor").val(food_5_points_color);
 	})
 
 	$("#color2").on("change", function(){
-		color2 = $("#color2").val();
-		$("#15pointballscolor").val(color2);
+		food_15_points_color = $("#color2").val();
+		$("#15pointballscolor").val(food_15_points_color);
 	})
 
 	$("#color3").on("change", function(){
@@ -391,8 +413,8 @@ function initGameSettings(){
 	time_countdown = $.trim($('#time_quantity').val());
 	monster_quantity = $.trim($('#monster_quantity').val());
 
-	color1 = $.trim($('#color1').val());
-	color2 = $.trim($('#color2').val());
+	food_5_points_color = $.trim($('#color1').val());
+	food_15_points_color = $.trim($('#color2').val());
 	color3 = $.trim($('#color3').val());
 
 }
@@ -424,8 +446,8 @@ function Start() {
 	$("#TimeLeft").val(time_countdown);
 	$("#Monsters").val(monster_quantity);
 
-	$("#5pointballscolor").val(color1);
-	$("#15pointballscolor").val(color2);
+	$("#5pointballscolor").val(food_5_points_color);
+	$("#15pointballscolor").val(food_15_points_color);
 	$("#20pointballscolor").val(color3);
 
 	$("#5pointballs").val(Math.round(food_remain*0.6));
@@ -445,19 +467,19 @@ function Start() {
 				(i == 6 && j == 1) ||
 				(i == 6 && j == 2)
 			) {
-				board[i][j] = 4;
+				board[i][j] = board_cell_type.Wall;
 			} else {
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
 					food_remain--;
-					board[i][j] = 1;
+					board[i][j] = board_cell_type.food_5_points;
 				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
-					board[i][j] = 2;
+					board[i][j] = board_cell_type.Pacman;
 				} else {
-					board[i][j] = 0;
+					board[i][j] = board_cell_type.empty_cell;
 				}
 				cnt--;
 			}
@@ -585,6 +607,10 @@ function Draw(Direction) {
 				else if (Direction == '4')
 					drawRightPacman(center.x,center.y);
 				
+
+			// if (board[i][j] == board_cell_type.Pacman) {
+			// 	drawTopPacman(center.x,center.y);
+
 				// context.beginPath();
 				// context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
 				// context.lineTo(center.x, center.y);
@@ -594,12 +620,12 @@ function Draw(Direction) {
 				// context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
 				// context.fillStyle = "black"; //color
 				// context.fill();
-			} else if (board[i][j] == 1) {
+			} else if (board[i][j] == board_cell_type.food_5_points) {
 				context.beginPath();
 				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
 				context.fillStyle = "black"; //color
 				context.fill();
-			} else if (board[i][j] == 4) {
+			} else if (board[i][j] == board_cell_type.Wall) {
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
