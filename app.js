@@ -2,6 +2,7 @@ var context;
 var shape = new Object();
 var board;
 var score;
+var normalized_score = 0;
 var pac_color;
 var start_time;
 var time_elapsed;
@@ -35,17 +36,7 @@ const board_cell_type = {
 	Pacman: '2',
 	Wall: '4',
 };
-/* ------------------- Enums ------------------------- */
-const board_cell_type = {
-	empty_cell: '0',
-	food_5_points: '1',
-	food_15_points: '3',
-	food_20_points: '5',
-	Pacman: '2',
-	Wall: '4',
-};
 
-/* ------------------------------------------------- */
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
@@ -268,84 +259,6 @@ function RandomConfig(){
 }
 /* ------------------------------------------ */
 
-// function validateEmail(email) {
-// 	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-// 	return re.test(String(email).toLowerCase());
-// }
-
-// function checkRegisteration(){
-// 	var username_val = $.trim($('#username').val());
-// 	var password_val = $.trim($('#password').val());
-// 	var fullname_val = $.trim($('#fullname').val());
-// 	var email_val = $.trim($('#email').val());
-// 	var birthdate_val = $.trim($('#birthdate').val());
-
-// 	if(!username_val){
-// 	  alert('Please Enter Your Username');
-// 	  return false;
-// 	}
-// 	if(!password_val){
-// 		alert('Please Enter Your Password');
-// 		return false;
-// 	}
-// 	else if(password_val.length < 6){
-// 		alert('Your Password Must Be Atleast 6 Characters');
-// 		return false;
-// 	}
-// 	else if( !(/\d/.test(password_val)&/[a-z]/i.test(password_val))){
-// 		alert('Your Password Must Contain Both Numbers And Letters');
-// 		return false;
-// 	}
-// 	if(!fullname_val){
-// 		alert('Please Enter Your Full Name');
-// 		return false;
-// 	}
-// 	else if(/\d/.test(fullname_val)){
-// 		alert('Full Name Cannot Contain Numbers');
-// 		return false;
-// 	}
-// 	if(!email_val){
-// 		alert('Please Enter Your Email');
-// 		return false;
-// 	}
-// 	else if(!validateEmail(email_val)){
-// 		alert('Please Enter A Valid Email Address');
-// 		return false;
-// 	}
-
-// 	if(!birthdate_val){
-// 		alert('Please Enter Your Birthdate');
-// 		return false;
-// 	}
-// 	else{
-// 	  alert('Thank You For Registering!');
-// 	  localStorage.setItem(username_val,password_val);
-// 	  return true;
-// 	}
-// }
-
-
-
-// function checklogin(){
-// 	var username_val = $.trim($('#username_login').val());
-// 	var password_val = $.trim($('#password_login').val());
-
-
-// 	var user_password = localStorage.getItem(username_val);
-// 	if(user_password == null){
-// 	  alert('Username Does Not Exist');
-// 	  return false;
-// 	}
-// 	else if(user_password != password_val){
-// 		alert('Incorrect Password');
-// 		return false;
-// 	}
-// 	else{
-// 		alert('Welcome Back '+ username_val+'!');
-// 		return true;
-// 	}
-// }
-
 function updateOnChange(){
 	$("#up").on("change", function(){
 		moveup = $("#up").val();
@@ -390,18 +303,12 @@ function updateOnChange(){
 	})
 
 	$("#color3").on("change", function(){
-		color3 = $("#color3").val();
-		$("#20pointballscolor").val(color3);
+		food_20_points_color = $("#color3").val();
+		$("#20pointballscolor").val(food_20_points_color);
 	})
 
 }
 
-function startGame(){
-
-	showPage("game");
-	Start();
-
-}
 
 function initGameSettings(){
 	moveup = $.trim($('#up').val());
@@ -415,7 +322,7 @@ function initGameSettings(){
 
 	food_5_points_color = $.trim($('#color1').val());
 	food_15_points_color = $.trim($('#color2').val());
-	color3 = $.trim($('#color3').val());
+	food_20_points_color = $.trim($('#color3').val());
 
 }
 
@@ -435,8 +342,8 @@ function Start() {
 	var cnt = 100;
 
 
-
 	initGameSettings();
+
 	$("#MoveUp").val(moveup);
 	$("#MoveDown").val(movedown);
 	$("#MoveLeft").val(moveleft);
@@ -448,7 +355,7 @@ function Start() {
 
 	$("#5pointballscolor").val(food_5_points_color);
 	$("#15pointballscolor").val(food_15_points_color);
-	$("#20pointballscolor").val(color3);
+	$("#20pointballscolor").val(food_20_points_color);
 
 	$("#5pointballs").val(Math.round(food_remain*0.6));
 	$("#15pointballs").val(Math.round(food_remain*0.3));
@@ -456,6 +363,7 @@ function Start() {
 
 	var pacman_remain = 1;
 	start_time = new Date();
+
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
@@ -470,10 +378,11 @@ function Start() {
 				board[i][j] = board_cell_type.Wall;
 			} else {
 				var randomNum = Math.random();
-				if (randomNum <= (1.0 * food_remain) / cnt) {
-					food_remain--;
-					board[i][j] = board_cell_type.food_5_points;
-				} else if (randomNum < (1.0 * (pacman_remain + food_remain)) / cnt) {
+				// if (randomNum <= (1.0 * food_remain) / cnt) {
+				// 	food_remain--;
+				// 	board[i][j] = board_cell_type.food_5_points;
+				//}
+				 if (randomNum < (1.0 * (pacman_remain )) / cnt) {
 					shape.i = i;
 					shape.j = j;
 					pacman_remain--;
@@ -485,11 +394,9 @@ function Start() {
 			}
 		}
 	}
-	while (food_remain > 0) {
-		var emptyCell = findRandomEmptyCell(board);
-		board[emptyCell[0]][emptyCell[1]] = 1;
-		food_remain--;
-	}
+
+	placeFoodOnBoard(board)
+
 	keysDown = {};
 	addEventListener(
 		"keydown",
@@ -505,7 +412,7 @@ function Start() {
 		},
 		false
 	);
-	interval = setInterval(UpdatePosition, 200); //250
+	interval = setInterval(UpdatePosition, 100); //250
 }
 
 function findRandomEmptyCell(board) {
@@ -536,6 +443,43 @@ function GetKeyPressed() {
 		return 4;
 	}
 	return 0;
+}
+
+function placeFoodOnBoard(board){
+	let number_of_food_5_points = Math.floor(0.6 * total_food);
+	let number_of_food_15_points = Math.floor(0.3 * total_food);
+	let number_of_food_20_points = Math.floor(0.1 * total_food);
+	
+	var emptyCell;
+	
+
+	while (number_of_food_5_points > 0){
+		emptyCell = findRandomEmptyCell(board);
+
+		if (board[emptyCell[0]][emptyCell[1]] == board_cell_type.empty_cell){
+			board[emptyCell[0]][emptyCell[1]] = board_cell_type.food_5_points
+			number_of_food_5_points--
+		}
+	}
+
+	while (number_of_food_15_points > 0){
+		emptyCell = findRandomEmptyCell(board);
+
+		if (board[emptyCell[0]][emptyCell[1]] == board_cell_type.empty_cell){
+			board[emptyCell[0]][emptyCell[1]] = board_cell_type.food_15_points
+			number_of_food_15_points--
+		}
+	}
+
+	
+	while (number_of_food_20_points > 0){
+		emptyCell = findRandomEmptyCell(board);
+
+		if (board[emptyCell[0]][emptyCell[1]] == board_cell_type.empty_cell){
+			board[emptyCell[0]][emptyCell[1]] = board_cell_type.food_20_points
+			number_of_food_20_points--
+		}
+	}
 }
 
 function drawRightPacman(x,y){
@@ -586,6 +530,27 @@ function drawDownPacman(x,y){
 	context.fill();
 }
 
+function drawFood(x,y,color, type){
+	if (type == board_cell_type.food_5_points){
+		context.beginPath();
+		context.arc(x, y, 5, 0, 2 * Math.PI); // circle
+		context.fillStyle = color; //color
+		context.fill()
+	}
+	else if (type == board_cell_type.food_15_points){
+		context.beginPath();
+		context.arc(x, y, 10, 0, 2 * Math.PI); // circle
+		context.fillStyle = color; //color
+		context.fill();
+	}
+	else{
+		context.beginPath();
+		context.arc(x, y, 15, 0, 2 * Math.PI); // circle
+		context.fillStyle = color; //color
+		context.fill();
+	}
+}
+
 function Draw(Direction) {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
@@ -621,10 +586,17 @@ function Draw(Direction) {
 				// context.fillStyle = "black"; //color
 				// context.fill();
 			} else if (board[i][j] == board_cell_type.food_5_points) {
-				context.beginPath();
-				context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				context.fillStyle = "black"; //color
-				context.fill();
+				drawFood(center.x,center.y,food_5_points_color, board_cell_type.food_5_points)
+				// context.beginPath();
+				// context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+				// context.fillStyle = "black"; //color
+				// context.fill();
+ 			
+			} else if(board[i][j] == board_cell_type.food_15_points){
+				drawFood(center.x,center.y,food_15_points_color, board_cell_type.food_15_points)
+			
+			} else if(board[i][j] == board_cell_type.food_20_points){
+				drawFood(center.x,center.y,food_20_points_color, board_cell_type.food_20_points)
 			} else if (board[i][j] == board_cell_type.Wall) {
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
@@ -637,6 +609,7 @@ function Draw(Direction) {
 
 function UpdatePosition() {
 	board[shape.i][shape.j] = 0;
+
 	var x = GetKeyPressed();
 	if (x == 1) {
 		if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {
@@ -658,9 +631,21 @@ function UpdatePosition() {
 			shape.i++;
 		}
 	}
-	if (board[shape.i][shape.j] == 1) {
-		score++;
+	if (board[shape.i][shape.j] == board_cell_type.food_5_points) {
+		score = score + 5;
+		normalized_score = normalized_score + 1
 	}
+	
+	else if (board[shape.i][shape.j] == board_cell_type.food_15_points) {
+		score = score + 15;
+		normalized_score = normalized_score + 1
+	}
+	
+	else if (board[shape.i][shape.j] == board_cell_type.food_20_points) {
+		score = score + 20;
+		normalized_score  = normalized_score + 1;
+	}
+
 	board[shape.i][shape.j] = 2;
 	var currentTime = new Date();
 	time_elapsed = Math.round((currentTime - start_time) / 1000,0);
@@ -669,11 +654,11 @@ function UpdatePosition() {
 		pac_color = "red";
 		$("#lblTime").css("background-color","red")
 	}
-	else if (score >= total_food/2) {
+	else if (normalized_score >= total_food/2) {
 		pac_color = "green";
 	}
 
-	if (score == total_food) {
+	if (normalized_score == total_food) {
 		window.clearInterval(interval);
 		$("#lblTime").css("background-color","white")
 		window.alert("Game completed");
@@ -690,4 +675,10 @@ function UpdatePosition() {
 	else {
 		Draw(x);
 	}
+}
+
+
+function startGame(){
+	showPage("game");
+	Start();
 }
