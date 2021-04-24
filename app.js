@@ -58,6 +58,21 @@ $(document).ready(function() {
 	updateOnChange();
 	showPage("welcome");
 
+	// When the user click the login - reset the game timer
+	(function ($) {
+		$.each(['show', 'hide'], function (i, ev) {
+		  var el = $.fn[ev];
+		  $.fn[ev] = function () {
+			this.trigger(ev);
+			return el.apply(this, arguments);
+		  };
+		});
+	  })(jQuery);
+
+	$('#login').on('show', function(){
+		resetGame()
+	})
+
 	// When the user click the X button close the modal
 	$(".close").eq(0).on("click", function(e) {
 		$("#aboutModal").hide();
@@ -124,25 +139,6 @@ $(document).ready(function() {
 
 		submitHandler:	(form) => {showPage('login')}
 		})
-
-		$('#configuration_form').validate({
-		
-			rules:{
-				quantity:{
-					required:true,
-					validFoodQuantity: true
-				},
-				duration:{
-					required:true,
-					validGameDuration: true
-				},
-				monsters:{
-					validMonstersAmount: true
-				}
-
-			},
-			submitHandler:	(form) => {}
-			})
 	
 
 		$('#login_form').validate({
@@ -169,6 +165,25 @@ $(document).ready(function() {
 			},
 			submitHandler:	(form) => {showPage('configuration')}
 			})
+
+			$('#configuration_form').validate({
+		
+				rules:{
+					quantity:{
+						required:true,
+						validFoodQuantity: true
+					},
+					duration:{
+						required:true,
+						validGameDuration: true
+					},
+					monsters:{
+						validMonstersAmount: true
+					}
+	
+				},
+				submitHandler:	(form) => {}
+				})
 	
 	//Start();
 });
