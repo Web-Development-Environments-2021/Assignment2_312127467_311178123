@@ -67,10 +67,10 @@
 			<!-- <label for="quantity" style="color: white;">How would you like to move your character?</label> -->
 			<h2 style="color: white;">How would you like to move your character?</h2>
 
-			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowUp" onkeydown="updateUpKey(event, this);" onkeyup="limit(this);"> </br>
-			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowDown" onkeydown="updateDownKey(event,this);" onkeyup="limit(this);"></br>
-			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowLeft" onkeydown="updateLeftKey(event,this);" onkeyup="limit(this);"> </br>
-			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowRight" onkeydown="updateRightKey(event,this);" onkeyup="limit(this);"> </br>
+			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowUp" onkeydown="updateUpKey(event, this);" onkeyup="limit(this);" required> </br>
+			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowDown" onkeydown="updateDownKey(event,this);" onkeyup="limit(this);" required></br>
+			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowLeft" onkeydown="updateLeftKey(event,this);" onkeyup="limit(this);" required> </br>
+			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowRight" onkeydown="updateRightKey(event,this);" onkeyup="limit(this);" required> </br>
 			</br>
 
 
@@ -105,7 +105,7 @@
 			</br>
 			</br>
 			</br>
-			<input type="button" onclick="startGame()" value="START GAME"></br>
+			<input type="button" onclick="checkConfiguration()" value="START GAME"></br>
 			<input type="button" onclick="RandomConfig()" value="RANDOM">
 
 			</form>

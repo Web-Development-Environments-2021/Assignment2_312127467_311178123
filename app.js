@@ -1,6 +1,17 @@
 var context;
-var shape = new Object();
+var pacman = new Object();
 var heart = new Object();
+var ghost1 = new Object();
+var ghost2 = new Object();
+var ghost3 = new Object();
+var ghost4 = new Object();
+var board_corners = new Object();
+board_corners.corner = {
+	1: [0,0],
+	2: [0,9],
+	3: [9,0],
+	4: [9,9]
+}
 var board;
 var score;
 var normalized_score = 0;
@@ -8,16 +19,17 @@ var pac_color;
 var start_time;
 var time_elapsed;
 var interval;
+var ghost_interval;
 // Game vars
 var moveup_code = 38;
 var movedown_code = 40;
 var moveleft_code = 37;
 var moveright_code = 39;
 
-var moveup;
-var movedown;
-var moveleft;
-var moveright;
+var moveup = "ArrowUp";
+var movedown = "ArrowDown";
+var moveleft = "ArrowLeft";
+var moveright = "ArrowRight";
 var food_remain;
 var total_food;
 var time_countdown;
@@ -48,30 +60,14 @@ const board_cell_type = {
 
 };
 
+var ghost_arr = [ghost1, ghost2,ghost3,ghost4]
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	localStorage.setItem('k','k');
 
-
-
 	updateOnChange();
 	showPage("welcome");
-
-	// When the user click the login - reset the game timer
-	(function ($) {
-		$.each(['show', 'hide'], function (i, ev) {
-		  var el = $.fn[ev];
-		  $.fn[ev] = function () {
-			this.trigger(ev);
-			return el.apply(this, arguments);
-		  };
-		});
-	  })(jQuery);
-
-	$('#login').on('show', function(){
-		resetGame()
-	})
 
 	// When the user click the X button close the modal
 	$(".close").eq(0).on("click", function(e) {
@@ -185,7 +181,6 @@ $(document).ready(function() {
 				submitHandler:	(form) => {}
 				})
 	
-	//Start();
 });
 
 
@@ -279,7 +274,7 @@ validPassword = (passowrd) => {
 
 /* ----------- Screen switching methods ---------- */
 function showPage(page){
-
+	resetGame();
 	if(page === "game"){
 		$(document.body).css( "background", "white" );
 	}
@@ -469,7 +464,6 @@ function Start() {
 	pac_color = "yellow";
 	var cnt = 100;
 
-	placeGhostOnBoard(board);
 	initGameSettings();
 
 	$("#MoveUp").val(moveup);
@@ -525,6 +519,7 @@ function Start() {
 		}
 
 	}
+	placeGhostOnBoard(board, monster_quantity);
 	placeFoodOnBoard(board)
 	placePacmanOnBoard(board)
 	placeHeartsOnBoard(board)
@@ -544,7 +539,8 @@ function Start() {
 		},
 		false
 	);
-	interval = setInterval(UpdatePosition, 100); //250
+	interval = setInterval(UpdatePosition, 180); 
+	ghost_interval = setInterval(UpdateGhostPosition, 350); 
 }
 
 function findRandomEmptyCell(board) {
@@ -584,8 +580,8 @@ function GetKeyPressed() {
 function placePacmanOnBoard(board){
 	let empty_cell = findRandomEmptyCell(board)
 	board[empty_cell[0]][empty_cell[1]] = board_cell_type.Pacman
-	shape.i = empty_cell[0];
-	shape.j = empty_cell[1];
+	pacman.i = empty_cell[0];
+	pacman.j = empty_cell[1];
 }
 
 function placeHeartsOnBoard(board){
@@ -599,12 +595,27 @@ function placeHeartsOnBoard(board){
 	heart.j = empty_cell[1];
 }
 
-function placeGhostOnBoard(board){
-	//board[0][0] = board_cell_type.ghost1;
-	// board[0][length(board[0])] = board_cell_type.ghost2;
-	// board[length(board[0],[0])] = board_cell_type.ghost3;
-	// board[length(board[0],[length(board[0])] = board_cell_type.ghost4;
+function placeGhostOnBoard(board,ghost_count){
+	let chosen_corner;
+	
+	for (var i = 1; i <= ghost_count; i++) {
+		chosen_corner = board_corners.corner[i]
+		board[chosen_corner[0]][chosen_corner[1]] = i+9;
+		ghost_arr[i-1].x = chosen_corner[0];
+		ghost_arr[i-1].y = chosen_corner[1];
+		ghost_arr[i-1].type = i+9;
+	}		
+}
 
+function pacmanWasEaten(board){
+	
+	for (var i = 1; i <= monster_quantity; i++) {
+		ghostX = ghost_arr[i-1].x
+		ghostY = ghost_arr[i-1].y
+		board[ghostX][ghostY] = board_cell_type.empty_cell;
+	}
+	placeGhostOnBoard(board,monster_quantity);
+	
 }
 
 function placeFoodOnBoard(board){
@@ -648,8 +659,54 @@ function placeFoodOnBoard(board){
 		}
 	}
 }
-/* ---------------------------------------------------------------------- */
+/* --------------------------------------------------------------------- */
 
+/* --------------------------- Move Methods ------------------------------- */
+
+function moveGhost(board, ghost){
+	let moved = true;
+	board[ghost.x][ghost.y] = board_cell_type.empty_cell;
+	if(ghost.x != pacman.i){
+		if(ghost.x < pacman.i && validMove(board,ghost.x+1,ghost.y))
+			ghost.x++;
+		else if(ghost.x > pacman.i && validMove(board,ghost.x-1,ghost.y))
+			ghost.x--;
+		else
+			moved = false;
+	}
+
+	if(!moved || ghost.x == pacman.i && ghost.y != pacman.j){
+		if(ghost.y < pacman.j && validMove(board,ghost.x,ghost.y+1))
+			ghost.y++;
+		else if(ghost.y > pacman.j && validMove(board,ghost.x,ghost.y-1))
+			ghost.y--;
+		else
+			moved = false;
+	}	
+	
+	if(!moved){
+		//cannot go according to the chase plan because of wall on either side
+		// check all possible directions
+		let ranDirection = randomInteger(1,4);
+		if(ranDirection == 1 && validMove(board,ghost.x-1,ghost.y))
+			ghost.x--;
+		else if(ranDirection == 2 && validMove(board,ghost.x+1,ghost.y))
+			ghost.x++;
+		else if(ranDirection == 3 &&validMove(board,ghost.x,ghost.y-1))
+			ghost.y--;
+		else if(ranDirection == 4 &&validMove(board,ghost.x,ghost.y+1))
+			ghost.y++;
+	}
+
+	if(ghost.x == pacman.i && ghost.y == pacman.j){
+		score-=10;
+		board[ghost.x][ghost.y] = board_cell_type.pacman;
+		pacmanWasEaten(board);
+	}
+	else
+		board[ghost.x][ghost.y] = ghost.type
+
+}
 
 /* ------------------------- Draw Methods ------------------------------ */
 
@@ -696,6 +753,7 @@ function drawHeart(fromx, fromy,lw=30,hlen=30) {
 	context.fill();
   
   }
+
 
 function drawRightPacman(x,y){
 	context.beginPath();
@@ -749,13 +807,13 @@ function drawGhost(center, i,j){
 	if(board[i][j]== board_cell_type.ghost1 || board[i][j]==board_cell_type.ghost2 || board[i][j]==board_cell_type.ghost3 || board[i][j]==board_cell_type.ghost4){
 		context.beginPath();
 		if(board[i][j]==board_cell_type.ghost1)
-			context.fillStyle = "#99ff66";
+			context.fillStyle = "red";
 		if(board[i][j]==board_cell_type.ghost2)
-			context.fillStyle = "pink";
+			context.fillStyle = "blue";
 		if(board[i][j]==board_cell_type.ghost3)
-			context.fillStyle = "#4ddbff";
+			context.fillStyle = randomColor();
 		if(board[i][j]==board_cell_type.ghost4)
-			context.fillStyle = "#ffcc66";
+			context.fillStyle = randomColor();
 		context.arc(center.x , center.y, 20, 1*Math.PI, 2* Math.PI);
 		context.lineTo(center.x+20, center.y+15);
 		context.arc(center.x + 20 / 4 + 10, center.y + 15, 20 * 0.25, 0, Math.PI);
@@ -784,6 +842,7 @@ function drawGhost(center, i,j){
 		context.fill();
 	}
 }
+
 function drawFood(x,y,color, type){
 	if (type == board_cell_type.food_5_points){
 		context.beginPath();
@@ -828,6 +887,7 @@ function drawWall(canvasWidth,canvasHeight){
 		}
 	}
 }
+
 /* ---------------------------------------------------------------------------------- */
 function Draw(Direction) {
 	canvas.width = canvas.width; //clean board
@@ -874,49 +934,64 @@ function Draw(Direction) {
 				context.fillStyle = "grey"; //color
 				context.fill();
 			}
+
 		}
 	}
 }
 
-function UpdatePosition() {
-	board[shape.i][shape.j] = 0;
+function validMove(board,x,y){
+	if(board[x][y] == board_cell_type.Wall)
+		return false;
+	else if(board[x][y] == board_cell_type.ghost1 || board[x][y] == board_cell_type.ghost2
+		 || board[x][y] == board_cell_type.ghost3 ||board[x][y] == board_cell_type.ghost4 )
+		 return false;
+	return true;
+}
 
+function UpdateGhostPosition(){
+	for (var k = 0; k < monster_quantity; k++) {
+		moveGhost(board,ghost_arr[k]);
+	}
+}
+
+function UpdatePosition() {
+	board[pacman.i][pacman.j] = 0;
 	var x = GetKeyPressed();
 	if (x == 1) {
-		if (shape.j > 0 && board[shape.i][shape.j - 1] != board_cell_type.Wall) {
-			shape.j--;
+		if (pacman.j > 0 && validMove(board,pacman.i,pacman.j-1)){//board[shape.i][shape.j - 1] != board_cell_type.Wall) {
+			pacman.j--;
 		}
 	}
 	if (x == 2) {
-		if (shape.j < 9 && board[shape.i][shape.j + 1] != board_cell_type.Wall) {
-			shape.j++;
+		if (pacman.j < 9 && validMove(board,pacman.i,pacman.j+1)){//board[shape.i][shape.j + 1] != board_cell_type.Wall) {
+			pacman.j++;
 		}
 	}
 	if (x == 3) {
-		if (shape.i > 0 && board[shape.i - 1][shape.j] != board_cell_type.Wall) {
-			shape.i--;
+		if (pacman.i > 0 && validMove(board,pacman.i-1,pacman.j)){//board[shape.i - 1][shape.j] != board_cell_type.Wall) {
+			pacman.i--;
 		}
 	}
 	if (x == 4) {
-		if (shape.i < 9 && board[shape.i + 1][shape.j] != board_cell_type.Wall) {
-			shape.i++;
+		if (pacman.i < 9 && validMove(board,pacman.i+1,pacman.j)){//board[shape.i + 1][shape.j] != board_cell_type.Wall) {
+			pacman.i++;
 		}
 	}
-	if (board[shape.i][shape.j] == board_cell_type.food_5_points) {
+	if (board[pacman.i][pacman.j] == board_cell_type.food_5_points) {
 		score = score + 5;
 		normalized_score = normalized_score + 1
 	}
 	
-	else if (board[shape.i][shape.j] == board_cell_type.food_15_points) {
+	else if (board[pacman.i][pacman.j] == board_cell_type.food_15_points) {
 		score = score + 15;
 		normalized_score = normalized_score + 1
 	}
 	
-	else if (board[shape.i][shape.j] == board_cell_type.food_20_points) {
+	else if (board[pacman.i][pacman.j] == board_cell_type.food_20_points) {
 		score = score + 20;
 		normalized_score  = normalized_score + 1;
 	}
-	board[shape.i][shape.j] = board_cell_type.Pacman;
+	board[pacman.i][pacman.j] = board_cell_type.Pacman;
 	var currentTime = new Date();
 	time_elapsed = Math.round((currentTime - start_time) / 1000,0);
 	time_left = time_countdown - time_elapsed
@@ -928,7 +1003,13 @@ function UpdatePosition() {
 		pac_color = "green";
 	}
 
-	if (normalized_score == total_food) {
+	// eat last food
+	if (normalized_score  ==  total_food) {
+		normalized_score +=1
+		Draw(x);
+	}
+
+	else if (normalized_score  >  total_food) {
 		$("#lblTime").css("background-color","white")
 		window.alert("Game completed");
 		resetGame();
@@ -947,15 +1028,35 @@ function UpdatePosition() {
 	}
 }
 
+function checkConfiguration(){
+
+	let flag = true;
+	let moves = [moveup, movedown, moveleft, moveright];
+	console.log(moves);
+	for (var i = 0; i < moves.length; i++) {
+		for (var j = i+1; j < moves.length; j++) {
+			if(moves[i] == moves[j]){
+				flag = false;
+				alert("Please Choose Different Controls For Each Move")
+				break;
+			}
+		}
+		if(!flag)	
+			break;
+	}
+	if(flag)
+		startGame();
+}
 
 function startGame(){
 	showPage("game");
-	resetGame()
+	resetGame();
 	Start();
 }
 
 function resetGame(){
 	window.clearInterval(interval);
+	window.clearInterval(ghost_interval);
 	lblScore.value = 0;
 	score = 0;
 	normalized_score = 0;
