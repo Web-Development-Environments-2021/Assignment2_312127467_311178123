@@ -263,6 +263,7 @@ function showPage(page){
 	if(page === "game"){
 		$(document.body).css( "background", "white" );
 	}
+
 	else{
 		setBackroundImageForBody("./pictures/back5.jpg")
 	}
@@ -553,7 +554,11 @@ function placeFoodOnBoard(board){
 	let number_of_food_5_points = Math.floor(0.6 * total_food);
 	let number_of_food_15_points = Math.floor(0.3 * total_food);
 	let number_of_food_20_points = Math.floor(0.1 * total_food);
-	
+
+	// Sometimes if the total food is not a rounded number (20, 50 etc) the sum of the food could be 1 values less than the total food
+	if (number_of_food_5_points + number_of_food_15_points + number_of_food_20_points != total_food){
+		number_of_food_5_points = number_of_food_5_points + (total_food - (number_of_food_5_points + number_of_food_15_points + number_of_food_20_points))
+	}
 	let number_of_food = total_food
 	let random_number;
 	while( number_of_food > 0){
@@ -893,6 +898,7 @@ function UpdatePosition() {
 
 function startGame(){
 	showPage("game");
+	resetGame()
 	Start();
 }
 
