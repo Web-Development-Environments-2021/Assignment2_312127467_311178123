@@ -40,7 +40,12 @@ const board_cell_type = {
 	food_20_points: 3,
 	Pacman: 4,
 	Wall: 5,
-	Heart: 6
+	Heart: 6,
+	ghost1: 10,
+	ghost2: 11,
+	ghost3: 12,
+	ghost4: 13
+
 };
 
 
@@ -419,7 +424,7 @@ function Start() {
 	pac_color = "yellow";
 	var cnt = 100;
 
-
+	placeGhostOnBoard(board);
 	initGameSettings();
 
 	$("#MoveUp").val(moveup);
@@ -547,6 +552,14 @@ function placeHeartsOnBoard(board){
 
 	heart.i = empty_cell[0];
 	heart.j = empty_cell[1];
+}
+
+function placeGhostOnBoard(board){
+	board[0][0] = board_cell_type.ghost1;
+	// board[0][length(board[0])] = board_cell_type.ghost2;
+	// board[length(board[0],[0])] = board_cell_type.ghost3;
+	// board[length(board[0],[length(board[0])] = board_cell_type.ghost4;
+
 }
 
 function placeFoodOnBoard(board){
@@ -688,19 +701,16 @@ function drawDownPacman(x,y){
 	context.fill();
 }
 
-function drawGhost(i,j){
-	var center = new Object();
-	center.x = i * 60 + 30;
-	center.y = j * 60 + 30;
-	if(board[i][j]==100 || board[i][j]==101 || board[i][j]==102 || board[i][j]==103){
+function drawGhost(center, i,j){
+	if(board[i][j]== board_cell_type.ghost1 || board[i][j]==board_cell_type.ghost2 || board[i][j]==board_cell_type.ghost3 || board[i][j]==board_cell_type.ghost4){
 		context.beginPath();
-		if(board[i][j]==100)
+		if(board[i][j]==board_cell_type.ghost1)
 			context.fillStyle = "#99ff66";
-		if(board[i][j]==101)
+		if(board[i][j]==board_cell_type.ghost2)
 			context.fillStyle = "pink";
-		if(board[i][j]==102)
+		if(board[i][j]==board_cell_type.ghost3)
 			context.fillStyle = "#4ddbff";
-		if(board[i][j]==103)
+		if(board[i][j]==board_cell_type.ghost4)
 			context.fillStyle = "#ffcc66";
 		context.arc(center.x , center.y, 20, 1*Math.PI, 2* Math.PI);
 		context.lineTo(center.x+20, center.y+15);
@@ -784,7 +794,7 @@ function Draw(Direction) {
 			var center = new Object();
 			center.x = i * 60 + 30;
 			center.y = j * 60 + 30;
-			drawGhost(i,j);
+			drawGhost(center,i,j);
 			if (Direction == '0')
 				Direction = last_key_pressed;
 			if (board[i][j] == board_cell_type.Pacman) {				
