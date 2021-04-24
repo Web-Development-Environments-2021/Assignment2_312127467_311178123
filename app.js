@@ -30,6 +30,7 @@ var moveup = "ArrowUp";
 var movedown = "ArrowDown";
 var moveleft = "ArrowLeft";
 var moveright = "ArrowRight";
+var player;
 var food_remain;
 var total_food;
 var time_countdown;
@@ -363,6 +364,12 @@ function updateOnChange(){
 		$("#right").val(moveright);
 	})
 
+	
+	$("#username_login").on("change" , function(){
+		player = $("#username_login").val();
+		$("#User").val(player);
+	})
+
 	$("#up").on("change" , function(){
 		moveup = $("#up").val();
 		$("#MoveUp").val(moveup);
@@ -465,6 +472,7 @@ function Start() {
 	var cnt = 100;
 
 	initGameSettings();
+	$("#User").val(player);
 
 	$("#MoveUp").val(moveup);
 	$("#MoveDown").val(movedown);
