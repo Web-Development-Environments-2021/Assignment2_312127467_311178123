@@ -55,7 +55,6 @@ $(document).ready(function() {
 
 	// When the user click the X button close the modal
 	$(".close").eq(0).on("click", function(e) {
-		console.log("hey")
 		$("#aboutModal").hide();
 	  });
 	
@@ -557,13 +556,10 @@ function placeFoodOnBoard(board){
 	
 	let number_of_food = total_food
 	let random_number;
-
 	while( number_of_food > 0){
-
 		
 		for (var i = randomInteger(0,9); i < 10; i++) {
 			for (var j = randomInteger(0,9); j < 10; j++) {
-				 
 				if(board[i][j] == board_cell_type.empty_cell && number_of_food > 0){
 					random_number = Math.random()
 
@@ -582,41 +578,13 @@ function placeFoodOnBoard(board){
 						board[i][j] = board_cell_type.food_5_points
 						number_of_food_5_points--;
 					}
-					number_of_food--;
+					// console.log(number_of_food)
+					number_of_food = number_of_food_5_points + number_of_food_15_points + number_of_food_20_points;
+
 				}
 			}
 		}
 	}
-	console.log(board)
-	/* 
-	while (number_of_food_5_points > 0){
-		// emptyCell = findRandomEmptyCell(board);
-		
-		if( board[empty_cell[0]][empty_cell[1]] == board_cell_type.empty_cell){
-			board[empty_cell[0]][empty_cell[1]] = board_cell_type.food_5_points;
-			number_of_food_5_points--;
-		}
-		emptyCell = findRandomEmptyCell(board);
-	}
-
-	while (number_of_food_15_points > 0){
-
-		if(board[empty_cell[0]][empty_cell[1]] == board_cell_type.empty_cell){
-			board[empty_cell[0]][empty_cell[1]] = board_cell_type.food_15_points;
-			number_of_food_15_points--;
-		}
-		emptyCell = findRandomEmptyCell(board);
-	}
-
-	while (number_of_food_20_points > 0){
-
-		if( board[empty_cell[0]][empty_cell[1]] == board_cell_type.empty_cell){
-			board[empty_cell[0]][empty_cell[1]] = board_cell_type.food_20_points;
-			number_of_food_20_points--;
-		}
-		emptyCell = findRandomEmptyCell(board);
-	}
-	*/
 }
 /* ---------------------------------------------------------------------- */
 
@@ -778,6 +746,30 @@ function drawFood(x,y,color, type){
 	}
 }
 
+function drawWall(canvasWidth,canvasHeight){
+	const bh = 60,
+	bw = 60,
+	space = 5;
+
+	// calculate the rows and columns of the wall
+	const rows = Math.ceil(canvasHeight / (bh + space));
+	const columns = Math.ceil(canvasWidth / (bw + space));
+
+	// draw columns
+	context.fillStyle = 'red';
+	for (let r = 0; r < rows; r++) {
+		// draw rows
+		for (let c = 0; c < columns; c++) {
+			if (r % 2) {
+				c == 0 ? context.fillRect(c * (bw + space), r * (bh + space), bw / 2, bh) :
+				context.fillRect(c * (bw + space) - bw / 2, r * (bh + space), bw, bh);
+			} else {
+				context.fillRect(c * (bw + space), r * (bh + space), bw, bh);
+			}
+		}
+	}
+}
+/* ---------------------------------------------------------------------------------- */
 function Draw(Direction) {
 	canvas.width = canvas.width; //clean board
 	lblScore.value = score;
@@ -801,18 +793,6 @@ function Draw(Direction) {
 					drawRightPacman(center.x,center.y);
 				
 
-			// if (board[i][j] == board_cell_type.Pacman) {
-			// 	drawTopPacman(center.x,center.y);
-
-				// context.beginPath();
-				// context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-				// context.lineTo(center.x, center.y);
-				// context.fillStyle = pac_color; //color
-				// context.fill();
-				// context.beginPath();
-				// context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-				// context.fillStyle = "black"; //color
-				// context.fill();
 			} else if(board[i][j] == board_cell_type.Heart)
 				drawHeart(center.x,center.y) 
 			
@@ -829,6 +809,7 @@ function Draw(Direction) {
 			} else if(board[i][j] == board_cell_type.food_20_points){
 				drawFood(center.x,center.y,food_20_points_color, board_cell_type.food_20_points)
 			} else if (board[i][j] == board_cell_type.Wall) {
+				// drawWall(center.x - 30, center.y - 30)
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
@@ -876,7 +857,8 @@ function UpdatePosition() {
 		score = score + 20;
 		normalized_score  = normalized_score + 1;
 	}
-
+	// console.log(total_food)
+	console.log(normalized_score)
 	board[shape.i][shape.j] = board_cell_type.Pacman;
 	var currentTime = new Date();
 	time_elapsed = Math.round((currentTime - start_time) / 1000,0);
