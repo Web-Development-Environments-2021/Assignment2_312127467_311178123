@@ -264,7 +264,7 @@ p:hover {
   flex-direction: row;
   flex-wrap: nowrap;
   align-content: center;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: flex-end;
 }
 

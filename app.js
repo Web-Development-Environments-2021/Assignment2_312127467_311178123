@@ -1,5 +1,6 @@
 var context;
 var shape = new Object();
+var heart = new Object();
 var board;
 var score;
 var normalized_score = 0;
@@ -39,12 +40,15 @@ const board_cell_type = {
 	food_20_points: 3,
 	Pacman: 4,
 	Wall: 5,
+	Heart: 6
 };
 
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
 	localStorage.setItem('k','k');
+
+
 
 	updateOnChange();
 	showPage("welcome");
@@ -68,7 +72,7 @@ $(document).ready(function() {
 		}
 	});
 
-	/* Validation plugins was used to set up rules for the registreation and login page */
+	/* Validation plugins was used to set up rules for the registreation, configuration and login page */
 	$('#reg_form').validate({
 		
 		rules:{
@@ -99,7 +103,7 @@ $(document).ready(function() {
 			},
 			password:{ 
 				required:"Please Enter A Password",
-				minLength: "Password must be at least 6 characters",
+				minlength: "Password must be at least 6 characters",
 			},
 			fullname:{
 				required:"Please Enter A Name",
@@ -117,6 +121,25 @@ $(document).ready(function() {
 		submitHandler:	(form) => {showPage('login')}
 		})
 
+		$('#configuration_form').validate({
+		
+			rules:{
+				quantity:{
+					required:true,
+					validFoodQuantity: true
+				},
+				duration:{
+					required:true,
+					validGameDuration: true
+				},
+				monsters:{
+					validMonstersAmount: true
+				}
+
+			},
+			submitHandler:	(form) => {}
+			})
+	
 
 		$('#login_form').validate({
 		
@@ -159,6 +182,8 @@ $.validator.addMethod("validPassword", function(value, element){
     };
 },"Password must contain at least one letter and one number");
 
+
+
 $.validator.addMethod("isPassowrdCorrect", function(value, element){
 
 	var username_val = $.trim($('#username_login').val());
@@ -192,12 +217,42 @@ $.validator.addMethod("isRegistered", function(value, element){
     };
 },"No such user exists in the system");
 
+
+
+$.validator.addMethod("validFoodQuantity", function(value, element){
+
+    if( value<50 || value >90 ){
+        return false;
+    } else {
+        return true;
+    };
+},"Food quantity should be between 50 and 90");
+
+$.validator.addMethod("validGameDuration", function(value, element){
+
+    if( value<60){
+        return false;
+    } else {
+        return true;
+    };
+},"Game duration should be at least 60 seconds");
+
+$.validator.addMethod("validMonstersAmount", function(value, element){
+
+    if( value<1 || value > 4){
+        return false;
+    } else {
+        return true;
+    };
+},"There should be between 1 to 4 monsters");
+
 validPassword = (passowrd) => {
 	if( !(/\d/.test(passowrd)&/[a-z]/i.test(passowrd))){
 		return false;
 	}
 		return true;
 }
+
 
 /* ---------------------------------------*/
 
@@ -398,7 +453,11 @@ function Start() {
 				(i == 6 && j == 2)
 			) {
 				board[i][j] = board_cell_type.Wall;
-			} else {
+			} else if(i == 2 && j == 2){
+				board[i][j] = 6
+			} 
+			
+			else {
 				//var randomNum = Math.random();
 				// if (randomNum <= (1.0 * food_remain) / cnt) {
 				// 	food_remain--;
@@ -481,6 +540,12 @@ function placePacmanOnBoard(board){
 	shape.j = empty_cell[1];
 }
 
+function placeHeartOnBoard(board){
+	let empty_cell = findRandomEmptyCell(board)
+	board[empty_cell[0]][empty_cell[1]] = board_cell_type.Heart
+	heart.i = empty_cell[0];
+	heart.j = empty_cell[1];
+}
 
 function placeFoodOnBoard(board){
 	console.log(board)
@@ -533,6 +598,53 @@ function placeFoodOnBoard(board){
 	*/
 }
 /* ---------------------------------------------------------------------- */
+
+
+/* ------------------------- Draw Methods ------------------------------ */
+
+function drawHeart(fromx, fromy,lw=30,hlen=30) {
+
+	var x = fromx;
+	var y = fromy;
+	var width = lw ;
+	var height = hlen;
+	
+	context.beginPath();
+	var topCurveHeight = height * 0.3;
+	context.moveTo(x, y + topCurveHeight);
+
+	// top left curve
+	context.bezierCurveTo(
+	  x, y, 
+	  x - width / 2, y, 
+	  x - width / 2, y + topCurveHeight
+	);
+  
+	// bottom left curve
+	context.bezierCurveTo(
+	  x - width / 2, y + (height + topCurveHeight) / 2, 
+	  x, y + (height + topCurveHeight) / 2, 
+	  x, y + height
+	);
+  
+	// bottom right curve
+	context.bezierCurveTo(
+	  x, y + (height + topCurveHeight) / 2, 
+	  x + width / 2, y + (height + topCurveHeight) / 2, 
+	  x + width / 2, y + topCurveHeight
+	);
+  
+	// top right curve
+	context.bezierCurveTo(
+	  x + width / 2, y, 
+	  x, y, 
+	  x, y + topCurveHeight
+	);
+  
+	context.fillStyle = "red";
+	context.fill();
+  
+  }
 
 function drawRightPacman(x,y){
 	context.beginPath();
@@ -680,7 +792,10 @@ function Draw(Direction) {
 				// context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
 				// context.fillStyle = "black"; //color
 				// context.fill();
-			} else if (board[i][j] == board_cell_type.food_5_points) {
+			} else if(board[i][j] == board_cell_type.Heart)
+				drawHeart(center.x,center.y) 
+			
+			else if (board[i][j] == board_cell_type.food_5_points) {
 				drawFood(center.x,center.y,food_5_points_color, board_cell_type.food_5_points)
 				// context.beginPath();
 				// context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
