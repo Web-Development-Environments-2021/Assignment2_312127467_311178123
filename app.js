@@ -604,18 +604,22 @@ function placeGhostOnBoard(board,ghost_count){
 		ghost_arr[i-1].x = chosen_corner[0];
 		ghost_arr[i-1].y = chosen_corner[1];
 		ghost_arr[i-1].type = i+9;
+		//check the last item was not "eaten" by the ghost
+		ghost_arr[i-1].lastCellValue = board_cell_type.empty_cell;
 	}		
 }
 
 function pacmanWasEaten(board){
 	
+	// let temp = pac_color;
 	for (var i = 1; i <= monster_quantity; i++) {
 		ghostX = ghost_arr[i-1].x
 		ghostY = ghost_arr[i-1].y
-		board[ghostX][ghostY] = board_cell_type.empty_cell;
+		// board[ghostX][ghostY] = board_cell_type.empty_cell;
+		board[ghostX][ghostY] = ghost_arr[i-1].lastCellValue;
 	}
 	placeGhostOnBoard(board,monster_quantity);
-	
+	// pac_color = temp;
 }
 
 function placeFoodOnBoard(board){
@@ -623,6 +627,10 @@ function placeFoodOnBoard(board){
 	let number_of_food_5_points = Math.floor(0.6 * total_food);
 	let number_of_food_15_points = Math.floor(0.3 * total_food);
 	let number_of_food_20_points = Math.floor(0.1 * total_food);
+	console.log(number_of_food_5_points)
+	console.log(number_of_food_15_points)
+	console.log(number_of_food_20_points)
+
 
 	// Sometimes if the total food is not a rounded number (20, 50 etc) the sum of the food could be 1 values less than the total food
 	if (number_of_food_5_points + number_of_food_15_points + number_of_food_20_points != total_food){
@@ -631,7 +639,7 @@ function placeFoodOnBoard(board){
 	let number_of_food = total_food
 	let random_number;
 	while( number_of_food > 0){
-		
+		console.log(number_of_food)
 		for (var i = randomInteger(0,9); i < 10; i++) {
 			for (var j = randomInteger(0,9); j < 10; j++) {
 				if(board[i][j] == board_cell_type.empty_cell && number_of_food > 0){
@@ -665,7 +673,7 @@ function placeFoodOnBoard(board){
 
 function moveGhost(board, ghost){
 	let moved = true;
-	board[ghost.x][ghost.y] = board_cell_type.empty_cell;
+	board[ghost.x][ghost.y] = ghost.lastCellValue;
 	if(ghost.x != pacman.i){
 		if(ghost.x < pacman.i && validMove(board,ghost.x+1,ghost.y))
 			ghost.x++;
@@ -703,8 +711,10 @@ function moveGhost(board, ghost){
 		board[ghost.x][ghost.y] = board_cell_type.pacman;
 		pacmanWasEaten(board);
 	}
-	else
-		board[ghost.x][ghost.y] = ghost.type
+	else{
+		ghost.lastCellValue = board[ghost.x][ghost.y];
+		board[ghost.x][ghost.y] = ghost.type;
+	}
 
 }
 
@@ -1032,7 +1042,6 @@ function checkConfiguration(){
 
 	let flag = true;
 	let moves = [moveup, movedown, moveleft, moveright];
-	console.log(moves);
 	for (var i = 0; i < moves.length; i++) {
 		for (var j = i+1; j < moves.length; j++) {
 			if(moves[i] == moves[j]){
