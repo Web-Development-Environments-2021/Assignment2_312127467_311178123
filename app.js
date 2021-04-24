@@ -323,8 +323,37 @@ function RandomConfig(){
 }
 /* ------------------------------------------ */
 
+function getKeyValue(event){
+	event_code = event.keyCode;
+	if(event_code == 38)
+		return "ArrowUp";
+	else if(event_code == 40)
+		return "ArrowDown";
+	else if(event_code == 37)
+		return "ArrowLeft";
+	else if(event_code == 39)
+		return "ArrowRight";
+
+}
 function updateOnChange(){
-	$("#up").on("change", function(){
+	$( "#up" ).keydown(function( event ) {
+		moveup = getKeyValue(event);
+		$("#up").val(moveup);
+	})
+	$( "#down" ).keydown(function( event ) {
+		movedown = getKeyValue(event);
+		$("#down").val(movedown);
+	})
+	$( "#left" ).keydown(function( event ) {
+		moveleft = getKeyValue(event);
+		$("#left").val(moveleft);
+	})
+	$( "#right" ).keydown(function( event ) {
+		moveright = getKeyValue(event);
+		$("#right").val(moveright);
+	})
+
+	$("#up").on("change" , function(){
 		moveup = $("#up").val();
 		$("#MoveUp").val(moveup);
 	})
@@ -412,10 +441,11 @@ function initGameSettings(){
 function limit(element)
 {
     var max_chars = 1;
-
-    if(element.value.length > max_chars) {
-        element.value = element.value.substr(1, max_chars);
-    }
+	if(element.value != "ArrowUp" && element.value != "ArrowDown" && element.value != "ArrowLeft" && element.value != "ArrowRight"){
+		if(element.value.length > max_chars) {
+			element.value = element.value.substr(1, max_chars);
+		}
+	}
 }
 
 function Start() {
@@ -555,7 +585,7 @@ function placeHeartsOnBoard(board){
 }
 
 function placeGhostOnBoard(board){
-	board[0][0] = board_cell_type.ghost1;
+	//board[0][0] = board_cell_type.ghost1;
 	// board[0][length(board[0])] = board_cell_type.ghost2;
 	// board[length(board[0],[0])] = board_cell_type.ghost3;
 	// board[length(board[0],[length(board[0])] = board_cell_type.ghost4;
@@ -596,7 +626,6 @@ function placeFoodOnBoard(board){
 						board[i][j] = board_cell_type.food_5_points
 						number_of_food_5_points--;
 					}
-					// console.log(number_of_food)
 					number_of_food = number_of_food_5_points + number_of_food_15_points + number_of_food_20_points;
 
 				}
@@ -872,8 +901,6 @@ function UpdatePosition() {
 		score = score + 20;
 		normalized_score  = normalized_score + 1;
 	}
-	// console.log(total_food)
-	console.log(normalized_score)
 	board[shape.i][shape.j] = board_cell_type.Pacman;
 	var currentTime = new Date();
 	time_elapsed = Math.round((currentTime - start_time) / 1000,0);
