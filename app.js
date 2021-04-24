@@ -453,10 +453,7 @@ function Start() {
 				(i == 6 && j == 2)
 			) {
 				board[i][j] = board_cell_type.Wall;
-			} else if(i == 2 && j == 2){
-				board[i][j] = 6
-			} 
-			
+			}
 			else {
 				//var randomNum = Math.random();
 				// if (randomNum <= (1.0 * food_remain) / cnt) {
@@ -480,6 +477,7 @@ function Start() {
 	}
 	placeFoodOnBoard(board)
 	placePacmanOnBoard(board)
+	placeHeartsOnBoard(board)
 
 	keysDown = {};
 	addEventListener(
@@ -540,29 +538,52 @@ function placePacmanOnBoard(board){
 	shape.j = empty_cell[1];
 }
 
-function placeHeartOnBoard(board){
+function placeHeartsOnBoard(board){
 	let empty_cell = findRandomEmptyCell(board)
 	board[empty_cell[0]][empty_cell[1]] = board_cell_type.Heart
+
+	empty_cell = findRandomEmptyCell(board)
+	board[empty_cell[0]][empty_cell[1]] = board_cell_type.Heart
+
 	heart.i = empty_cell[0];
 	heart.j = empty_cell[1];
 }
 
 function placeFoodOnBoard(board){
-	console.log(board)
 
 	let number_of_food_5_points = Math.floor(0.6 * total_food);
 	let number_of_food_15_points = Math.floor(0.3 * total_food);
 	let number_of_food_20_points = Math.floor(0.1 * total_food);
 	
-	var empty_cell = findRandomEmptyCell(board)
 	let number_of_food = total_food
-	
-	for (var i = 0; i < 10; i++) {
-		for (var j = 0; j < 10; j++) {
-			
-			if(board[i][j] == board_cell_type.empty_cell && number_of_food > 0){
-				board[i][j] = randomInteger(1,3);
-				number_of_food--;
+	let random_number;
+
+	while( number_of_food > 0){
+
+		
+		for (var i = randomInteger(0,9); i < 10; i++) {
+			for (var j = randomInteger(0,9); j < 10; j++) {
+				 
+				if(board[i][j] == board_cell_type.empty_cell && number_of_food > 0){
+					random_number = Math.random()
+
+					// 10% of the random values will corresponds to the 10% of 20 points food
+					if (random_number < 0.1 & number_of_food_20_points > 0){
+						board[i][j] = board_cell_type.food_20_points
+						number_of_food_20_points--;
+					}
+					// 30% of the random values will corresponds to the 30% of 15 points food
+					else if(random_number >= 0.1 & random_number < 0.4 & number_of_food_15_points > 0){
+						board[i][j] = board_cell_type.food_15_points
+						number_of_food_15_points--;
+					}
+					// 60% of the random values will corresponds to the 60% of 5 points food
+					else if(number_of_food_5_points > 0){
+						board[i][j] = board_cell_type.food_5_points
+						number_of_food_5_points--;
+					}
+					number_of_food--;
+				}
 			}
 		}
 	}
