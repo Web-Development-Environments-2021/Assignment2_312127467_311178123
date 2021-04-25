@@ -1182,8 +1182,10 @@ function resetGame(){
 	window.clearInterval(interval);
 	window.clearInterval(ghost_interval);
 	window.clearInterval(coin_interval);
+	board = null
 	lblScore.value = 0;
 	score = 0;
 	normalized_score = 0;
 	lblTime.value = time_countdown;
+	pacman.hearts = 5
 }
