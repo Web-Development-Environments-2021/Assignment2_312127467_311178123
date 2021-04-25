@@ -290,10 +290,14 @@ function showPage(page){
 	resetGame();
 	if(page === "game"){
 		$(document.body).css( "background", "white" );
+		$(document.body).css( "overflow-y", "clip" ); // Remove the scrollbar during game time
+
 	}
 
 	else{
 		setBackroundImageForBody("./pictures/back5.jpg")
+		$(document.body).css( "overflow-y", "" );
+
 	}
 
 	hideDivs();
@@ -954,15 +958,15 @@ function drawCoin(x,y){
 	context.arc(x , y , 20 ,0  * Math.PI, 2 * Math.PI); // circle
 	context.fillStyle = "black"; //color
 	context.fill();
-    
-  	context.beginPath();
+
+	context.beginPath();
 	context.arc(x , y , 20 ,0  * Math.PI, 2 * Math.PI); // circle
-	context.strokeStyle = "white"; //color
+	context.strokeStyle = "black"; //color
 	context.stroke();
-    
-    context.beginPath();
+
+	context.beginPath();
 	context.arc(x , y , 30 ,0  * Math.PI, 2 * Math.PI); // circle
-	context.strokeStyle = "white"; //color
+	context.strokeStyle = "black"; //color
 	context.stroke();
 }
 
@@ -1039,28 +1043,14 @@ function drawFood(x,y,color, type){
 	}
 }
 
-function drawWall(canvasWidth,canvasHeight){
-	const bh = 60,
-	bw = 60,
-	space = 5;
-
-	// calculate the rows and columns of the wall
-	const rows = Math.ceil(canvasHeight / (bh + space));
-	const columns = Math.ceil(canvasWidth / (bw + space));
-
-	// draw columns
-	context.fillStyle = 'red';
-	for (let r = 0; r < rows; r++) {
-		// draw rows
-		for (let c = 0; c < columns; c++) {
-			if (r % 2) {
-				c == 0 ? context.fillRect(c * (bw + space), r * (bh + space), bw / 2, bh) :
-				context.fillRect(c * (bw + space) - bw / 2, r * (bh + space), bw, bh);
-			} else {
-				context.fillRect(c * (bw + space), r * (bh + space), bw, bh);
-			}
-		}
-	}
+function drawWall(x,y){
+	context.beginPath();
+	context.rect(x-30, y-30 , 60, 60);
+	context.fillStyle = "black"; //color
+	context.fill();
+	context.lineWidth = 5;
+	context.strokeStyle = "blue";
+	context.stroke();
 }
 
 /* ---------------------------------------------------------------------------------- */
@@ -1111,7 +1101,7 @@ function Draw(Direction) {
 			} else if(board[i][j] == board_cell_type.food_20_points){
 				drawFood(center.x,center.y,food_20_points_color, board_cell_type.food_20_points)
 			} else if (board[i][j] == board_cell_type.Wall) {
-				// drawWall(center.x - 30, center.y - 30)
+				//drawWall(center.x , center.y )
 				context.beginPath();
 				context.rect(center.x - 30, center.y - 30, 60, 60);
 				context.fillStyle = "grey"; //color
@@ -1290,3 +1280,7 @@ function playAudio() {
   function pauseAudio() {
 	document.getElementById("game_sounds").pause();
   }
+function newGameKey(){
+	resetGame();
+	showPage("configuration");
+}

@@ -10,7 +10,7 @@
 	</head>
 
 	<body>
-		<header style="position:sticky; top:0; width:100%;">
+		<header style=>
 			<h1>Ultimate Pacman</h1>
 			<div class="logo" style="margin-left: 2%; margin-right: 2%;">
 			<img src="./pictures/logo.png" width=30, height=30 >
@@ -172,32 +172,12 @@
 		
 		</div>
 
-		<!-- Game Socre, Lives, Time , New Game -->
-		<div id="game_score_time_live">
-			<div id="new_game">
-				<input type="button" onclick="startGame()" value="Start New Game"></br>
-			</div>
 
-			<div id="score">
-				<label for="lblScore">SCORE:</label>
-				<input id="lblScore" type="text" readonly="readonly"/>
-			</div>
-			<div id="time">
-				<label for="lblTime">TIME:</label>
-				<input id="lblTime" type="text" readonly="readonly" />
-			</div>
-			<div id="lives">
-				<label for="lblLives">LIVES:</label>
-				<!--<input id="lblLives" type="text"readonly="readonly" /> -->
-				<img id="lives_bar" width="100" height="30"/>
-			</div>
-		</div>
 	
 		<!-- Game window -->
 		<div id="game">
 			<div class = "configs">
-			<label for="lblconfigs" style = "color: rgb(37, 0, 124);">GOOD LUCK USER</label></br>
-			<input class = "c" id="User" type="text" readonly="readonly">
+			
 			<h2 style = "color: rgb(37, 0, 124); ">CONFIGURATIONS</h2>
 			
 			<label for="lblconfigs" style = "color: rgb(37, 0, 124);">CONTROLS:</label></br>
@@ -232,6 +212,33 @@
 
 			</div>
 			<canvas id="canvas" height="600" width="600"></canvas>
+
+					<!-- Game Socre, Lives, Time , New Game -->
+		<div id="game_score_time_live">
+
+			<div id="user_show" class="game_progress">
+				<label for="lblconfigs" style = "color: rgb(37, 0, 124);">GOOD LUCK USER</label></br>
+				<input class = "c" id="User" type="text" readonly="readonly">
+			</div>
+
+			<div id="score" class="game_progress">
+				<label for="lblScore">SCORE:</label>
+				<input id="lblScore" type="text" readonly="readonly"/>
+			</div>
+			<div id="time" class="game_progress">
+				<label for="lblTime">TIME:</label>
+				<input id="lblTime" type="text" readonly="readonly" />
+			</div>
+			<div id="lives">
+				<label for="lblLives">LIVES:</label>
+				<!--<input id="lblLives" type="text"readonly="readonly" /> -->
+				<img id="lives_bar" width="100" height="30"/>
+			</div>
+			<div id="new_game">
+				<input id="new_game_button" type="button" onclick="newGameKey()" value="Start New Game"></br>
+			</div>
+
+		</div>
 		</div>
 		<!-- AUDIO -->
 		<audio id="game_sounds" preload="auto" loop
