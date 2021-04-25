@@ -11,6 +11,9 @@ var ghost2 = new Object();
 var ghost3 = new Object();
 var ghost4 = new Object();
 var board_corners = new Object();
+var ill_color = false;
+var first_time = 0;
+var illToGreen = false;
 board_corners.corner = {
 	1: [0,0],
 	2: [0,9],
@@ -661,7 +664,8 @@ function updateLife(){
 function pacmanWasEaten(board){
 	pacman.eaten = true;
 	updateLife();
-
+	pac_color = "lightblue";
+	ill_color = true;
 	for (var i = 1; i <= monster_quantity; i++) {
 		ghostX = ghost_arr[i-1].x
 		ghostY = ghost_arr[i-1].y
@@ -753,7 +757,14 @@ function moveGhost(board, ghost){
 	}
 
 	if(ghost.x == pacman.i && ghost.y == pacman.j){
-		score-=10;
+		if(ghost == ghost1 || ghost == ghost3)
+			score-=10;
+		else if (ghost == ghost2)
+			score-=20;
+		else if(ghost == ghost4){
+			score-=20;
+			pacman.hearts--;
+		}
 		board[ghost.x][ghost.y] = board_cell_type.pacman;
 		pacmanWasEaten(board);
 	}
@@ -934,16 +945,19 @@ function drawCoin(x,y){
 }
 
 function drawGhost(center, i,j){
+	let scary_ghost = false;
 	if(board[i][j]== board_cell_type.ghost1 || board[i][j]==board_cell_type.ghost2 || board[i][j]==board_cell_type.ghost3 || board[i][j]==board_cell_type.ghost4){
 		context.beginPath();
 		if(board[i][j]==board_cell_type.ghost1)
 			context.fillStyle = "red";
 		if(board[i][j]==board_cell_type.ghost2)
-			context.fillStyle = "blue";
+			context.fillStyle = randomColor();
 		if(board[i][j]==board_cell_type.ghost3)
+			context.fillStyle = "blue";
+		if(board[i][j]==board_cell_type.ghost4){
 			context.fillStyle = randomColor();
-		if(board[i][j]==board_cell_type.ghost4)
-			context.fillStyle = randomColor();
+			scary_ghost = true;
+		}
 		context.arc(center.x , center.y, 20, 1*Math.PI, 2* Math.PI);
 		context.lineTo(center.x+20, center.y+15);
 		context.arc(center.x + 20 / 4 + 10, center.y + 15, 20 * 0.25, 0, Math.PI);
@@ -956,7 +970,7 @@ function drawGhost(center, i,j){
 		context.stroke();
 
 		context.beginPath();
-		context.fillStyle = "white"; //color
+		context.fillStyle = "white"; 
 		context.arc(center.x + 10, center.y -5, 5, 0, 2 * Math.PI);
 		context.fill();
 		context.beginPath();
@@ -964,12 +978,21 @@ function drawGhost(center, i,j){
 		context.fill();
 
 		context.beginPath();
-		context.fillStyle = "black"; //color
+		context.fillStyle = "black";
 		context.arc(center.x + 10, center.y -5, 3, 0, 2 * Math.PI);
 		context.fill();
 		context.beginPath();
 		context.arc(center.x - 10, center.y -5, 3, 0, 2 * Math.PI);
 		context.fill();
+
+		if(scary_ghost){
+			context.beginPath();
+			context.fillStyle = "white";
+			context.arc(center.x, center.y + 8, 8, 0, 2* Math.PI);
+			context.fill();
+			context.strokeStyle = "black";
+			context.stroke();
+		}
 	}
 }
 
@@ -1040,6 +1063,17 @@ function Draw(Direction) {
 					drawLeftPacman(center.x,center.y);
 				else if (Direction == '4')
 					drawRightPacman(center.x,center.y);
+				//change pacman color back to yellow if was eaten and some time has passed
+				if(ill_color && first_time == 3){
+					if(illToGreen)
+						pac_color = "green"
+					else
+						pac_color = "yellow"
+					ill_color = false;
+					first_time = 0;
+				}
+				else if(ill_color && first_time < 3)
+					first_time +=1;
 			} 
 			else if(board[i][j] == board_cell_type.coin)
 				drawCoin(center.x,center.y);
@@ -1139,7 +1173,10 @@ function UpdatePosition() {
 		$("#lblTime").css("background-color","red")
 	}
 	else if (normalized_score >= total_food/2) {
-		pac_color = "green";
+		if(ill_color)
+			illToGreen = true;
+		else
+			pac_color = "green";
 	}
 
 	// eat last food
@@ -1205,4 +1242,5 @@ function resetGame(){
 	normalized_score = 0;
 	lblTime.value = time_countdown;
 	pacman.hearts = 5
+	illToGreen = false;
 }
