@@ -1187,19 +1187,29 @@ function UpdatePosition() {
 
 	else if (normalized_score  >  total_food) {
 		$("#lblTime").css("background-color","white")
-		window.alert("Game completed");
 		window.alert("Your Score is: " + score)
+		window.alert("Winner!!!");
 		resetGame();
 		showPage("configuration");
 	}
 
-	else if (time_left < 0 || pacman.hearts <= 0) {
+	else if (time_left < 0) {
 		$("#lblTime").css("background-color","white")
-		window.alert("Game Over");
 		window.alert("Your Score is: " + score)
+		if(score < 100)
+			window.alert("You are better than "+ score+" points!");
+		else
+			window.alert("Winner!!!");
 		resetGame();
 		showPage("configuration");
-	} 
+	}
+	else if(pacman.hearts <= 0){
+		$("#lblTime").css("background-color","white")
+		window.alert("Your Score is: " + score)
+		window.alert("Loser!");
+		resetGame();
+		showPage("configuration");
+	}
 	else {
 		Draw(x);
 	}
