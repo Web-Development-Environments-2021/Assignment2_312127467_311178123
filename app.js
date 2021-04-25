@@ -1,5 +1,6 @@
 var context;
 var pacman = new Object();
+var coin = new Object();
 var heart = new Object();
 var ghost1 = new Object();
 var ghost2 = new Object();
@@ -20,6 +21,7 @@ var start_time;
 var time_elapsed;
 var interval;
 var ghost_interval;
+var coin_interval;
 // Game vars
 var moveup_code = 38;
 var movedown_code = 40;
@@ -550,7 +552,8 @@ function Start() {
 		false
 	);
 	interval = setInterval(UpdatePosition, 180); 
-	ghost_interval = setInterval(UpdateGhostPosition, 350); 
+	ghost_interval = setInterval(UpdateGhostPosition, 550); 
+	coin_interval = setInterval(UpdateCoinPosition, 550); 
 }
 
 function findRandomEmptyCell(board) {
@@ -620,9 +623,13 @@ function placeGhostOnBoard(board,ghost_count){
 }
 
 function placeCoinOnBoard(board){
-	let empty_cell = findRandomEmptyCell(board)
-
-	board[empty_cell[0]][empty_cell[1]] = board_cell_type.coin;
+	board[5][5] = board_cell_type.coin;
+	coin.x = 5;
+	coin.y = 5;
+	// board[empty_cell[0]][empty_cell[1]] = board_cell_type.coin;
+	// coin.x = empty_cell[0];
+	// coin.y = empty_cell[1];
+	coin.lastCellValue = board_cell_type.empty_cell;
 }
 
 function pacmanWasEaten(board){
@@ -634,7 +641,9 @@ function pacmanWasEaten(board){
 		// board[ghostX][ghostY] = board_cell_type.empty_cell;
 		board[ghostX][ghostY] = ghost_arr[i-1].lastCellValue;
 	}
+	board[pacman.i][pacman.j] = board_cell_type.empty_cell;
 	placeGhostOnBoard(board,monster_quantity);
+	placePacmanOnBoard(board);
 	// pac_color = temp;
 }
 
@@ -688,6 +697,7 @@ function placeFoodOnBoard(board){
 /* --------------------------- Move Methods ------------------------------- */
 
 function moveGhost(board, ghost){
+
 	let moved = true;
 	board[ghost.x][ghost.y] = ghost.lastCellValue;
 	if(ghost.x != pacman.i){
@@ -728,11 +738,63 @@ function moveGhost(board, ghost){
 		pacmanWasEaten(board);
 	}
 	else{
-		ghost.lastCellValue = board[ghost.x][ghost.y];
+		if(board[ghost.x][ghost.y] == board_cell_type.coin)
+			ghost.lastCellValue = coin.lastCellValue;
+		else
+			ghost.lastCellValue = board[ghost.x][ghost.y];
 		board[ghost.x][ghost.y] = ghost.type;
 	}
 
 }
+
+function moveCoin(board, coin){
+	let saw_ghost = false;
+	board[coin.x][coin.y] = coin.lastCellValue
+	let ranDirection = randomInteger(1,4);
+	let moved = false;
+	if(ranDirection == 1 && validMove(board,coin.x-1,coin.y)){
+		coin.x--;
+		moved = true;
+	}
+	else if(ranDirection == 2 && validMove(board,coin.x+1,coin.y)){
+		coin.x++;
+		moved = true;
+	}
+	else if(ranDirection == 3 &&validMove(board,coin.x,coin.y-1)){
+		coin.y--;
+		moved = true;
+	}
+	else if(ranDirection == 4 &&validMove(board,coin.x,coin.y+1)){
+		coin.y++;
+		moved = true;
+	}
+	
+	if(coin.x == pacman.i && coin.y == pacman.j){
+		score+=50;
+		board[coin.x][coin.y] = board_cell_type.pacman;
+		placeCoinOnBoard(board);
+	}
+	else if(moved){
+		// coin.lastCellValue = board[coin.x][coin.y];
+		
+		for (let i = 0; i < ghost_arr.length; i++) {
+			if(board[coin.x][coin.y] == ghost_arr[i].type){
+				coin.lastCellValue = ghost_arr[i].lastCellValue;
+				saw_ghost = true;
+				break;
+			}
+		}
+		if(!saw_ghost)
+			coin.lastCellValue = board[coin.x][coin.y];
+
+		board[coin.x][coin.y] = board_cell_type.coin;
+
+	}
+	else if (!moved){
+		board[coin.x][coin.y] = board_cell_type.coin;
+	}
+}
+
 
 /* ------------------------- Draw Methods ------------------------------ */
 
@@ -985,7 +1047,9 @@ function Draw(Direction) {
 }
 
 function validMove(board,x,y){
-	if(board[x][y] == board_cell_type.Wall)
+	if(x < 0 || x >9 || y<0 || y>9)
+		return false;
+	else if(board[x][y] == board_cell_type.Wall)
 		return false;
 	else if(board[x][y] == board_cell_type.ghost1 || board[x][y] == board_cell_type.ghost2
 		 || board[x][y] == board_cell_type.ghost3 ||board[x][y] == board_cell_type.ghost4 )
@@ -997,6 +1061,10 @@ function UpdateGhostPosition(){
 	for (var k = 0; k < monster_quantity; k++) {
 		moveGhost(board,ghost_arr[k]);
 	}
+}
+
+function UpdateCoinPosition(){
+	moveCoin(board,coin)
 }
 
 function UpdatePosition() {
@@ -1102,6 +1170,7 @@ function startGame(){
 function resetGame(){
 	window.clearInterval(interval);
 	window.clearInterval(ghost_interval);
+	window.clearInterval(coin_interval);
 	lblScore.value = 0;
 	score = 0;
 	normalized_score = 0;
