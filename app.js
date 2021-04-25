@@ -53,7 +53,7 @@ var last_key_pressed = 4;
 var food_5_points_color;
 var food_15_points_color;
 var food_20_points_color;
-
+var music_player;
 /* ------------------- Enums ------------------------- */
 const board_cell_type = {
 	empty_cell: 0,
@@ -72,6 +72,8 @@ const board_cell_type = {
 };
 
 var ghost_arr = [ghost1, ghost2,ghost3,ghost4]
+
+
 
 $(document).ready(function() {
 	context = canvas.getContext("2d");
@@ -1259,6 +1261,7 @@ function checkConfiguration(){
 function startGame(){
 	showPage("game");
 	resetGame();
+	playAudio();
 	Start();
 }
 
@@ -1266,6 +1269,7 @@ function resetGame(){
 	window.clearInterval(interval);
 	window.clearInterval(ghost_interval);
 	window.clearInterval(coin_interval);
+	pauseAudio();
 	board = null
 	lblScore.value = 0;
 	score = 0;
@@ -1274,3 +1278,15 @@ function resetGame(){
 	pacman.hearts = 5
 	illToGreen = false;
 }
+
+/*************************************** MUSIC ********************************8 */ 
+
+function playAudio() {
+	document.getElementById("game_sounds").play();
+	document.getElementById("game_sounds").vol = 0.05;
+
+  }
+  
+  function pauseAudio() {
+	document.getElementById("game_sounds").pause();
+  }
