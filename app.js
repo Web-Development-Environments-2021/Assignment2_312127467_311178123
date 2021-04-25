@@ -504,20 +504,22 @@ function Start() {
 
 	var pacman_remain = 1;
 	start_time = new Date();
+/***********************************init game*************************** */
+
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < 10; j++) {
-			if (
-				(i == 3 && j == 3) ||
-				(i == 3 && j == 4) ||
-				(i == 3 && j == 5) ||
-				(i == 6 && j == 1) ||
-				(i == 6 && j == 2)
-			) {
-				board[i][j] = board_cell_type.Wall;
-			}
-			else {
+			// if (
+			// 	(i == 3 && j == 3) ||
+			// 	(i == 3 && j == 4) ||
+			// 	(i == 3 && j == 5) ||
+			// 	(i == 6 && j == 1) ||
+			// 	(i == 6 && j == 2)
+			// ) {
+			// 	board[i][j] = board_cell_type.Wall;
+			// }
+			//if(validMove(i,j)) {//no ghost or wall
 				//var randomNum = Math.random();
 				// if (randomNum <= (1.0 * food_remain) / cnt) {
 				// 	food_remain--;
@@ -534,10 +536,13 @@ function Start() {
 					//board[i][j] = board_cell_type.empty_cell;
 				//}
 				cnt--;
-			}
+			//}
 		}
 
 	}
+/*********************************** END Walls*************************** */
+	
+	placeWallsOnBoard(board);
 	placeCoinOnBoard(board);
 	placeGhostOnBoard(board, monster_quantity);
 	placeFoodOnBoard(board);
@@ -598,6 +603,21 @@ function GetKeyPressed() {
 	return 0;
 }
 /* ------------ Place Objects On Board Methods -------------- */
+
+function placeWallsOnBoard(board){
+	let num_of_walls = randomInteger(7,12);
+	let k=0;
+	while(k<num_of_walls) {
+		let wall_cell = findRandomEmptyCell(board);
+		//do not place walls at corners
+		if(wall_cell != board_corners.corner[1] && wall_cell != board_corners.corner[2] &&
+			wall_cell != board_corners.corner[3] && wall_cell != board_corners.corner[4] ){
+
+				board[wall_cell[0]][wall_cell[1]] = board_cell_type.Wall;
+				k++;
+		}
+	}
+}
 function placePacmanOnBoard(board){
 	let empty_cell = findRandomEmptyCell(board)
 	board[empty_cell[0]][empty_cell[1]] = board_cell_type.Pacman
