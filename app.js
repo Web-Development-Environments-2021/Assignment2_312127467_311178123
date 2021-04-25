@@ -836,8 +836,18 @@ function drawCoin(x,y){
 	context.fillStyle = "gold"; //color
 	context.fill();
 	context.beginPath();
-	context.arc(x , y , 25 ,0  * Math.PI, 2 * Math.PI); // circle
-	context.strokeStyle = "black"; //color
+	context.arc(x , y , 20 ,0  * Math.PI, 2 * Math.PI); // circle
+	context.fillStyle = "black"; //color
+	context.fill();
+    
+  	context.beginPath();
+	context.arc(x , y , 20 ,0  * Math.PI, 2 * Math.PI); // circle
+	context.strokeStyle = "white"; //color
+	context.stroke();
+    
+    context.beginPath();
+	context.arc(x , y , 30 ,0  * Math.PI, 2 * Math.PI); // circle
+	context.strokeStyle = "white"; //color
 	context.stroke();
 }
 
@@ -948,8 +958,6 @@ function Draw(Direction) {
 					drawLeftPacman(center.x,center.y);
 				else if (Direction == '4')
 					drawRightPacman(center.x,center.y);
-				
-
 			} 
 			else if(board[i][j] == board_cell_type.coin)
 				drawCoin(center.x,center.y);
@@ -958,10 +966,6 @@ function Draw(Direction) {
 			
 			else if (board[i][j] == board_cell_type.food_5_points) {
 				drawFood(center.x,center.y,food_5_points_color, board_cell_type.food_5_points)
-				// context.beginPath();
-				// context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-				// context.fillStyle = "black"; //color
-				// context.fill();
  			
 			} else if(board[i][j] == board_cell_type.food_15_points){
 				drawFood(center.x,center.y,food_15_points_color, board_cell_type.food_15_points)
