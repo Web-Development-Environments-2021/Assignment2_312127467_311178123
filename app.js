@@ -1,6 +1,9 @@
 var context;
+var pictures_path = "./pictures/"
+var hearts_path = pictures_path + "hearts/"
 var pacman = new Object();
 var coin = new Object();
+pacman.hearts = 5;
 var heart = new Object();
 var ghost1 = new Object();
 var ghost2 = new Object();
@@ -456,6 +459,7 @@ function initGameSettings(){
 	food_15_points_color = $.trim($('#color2').val());
 	food_20_points_color = $.trim($('#color3').val());
 
+	$("#lives_bar").attr("src","./pictures/hearts/5hearts.png");
 }
 
 function limit(element)
@@ -632,19 +636,27 @@ function placeCoinOnBoard(board){
 	coin.lastCellValue = board_cell_type.empty_cell;
 }
 
+function updateLife(){
+	pacman.hearts--;
+	// In case that was the last live - show 1 heart to the user before the game over message
+	if(pacman.hearts == 0)
+		$("#lives_bar").attr("src",hearts_path + "1hearts.png");
+	else	
+		$("#lives_bar").attr("src",hearts_path + pacman.hearts + "hearts.png");
+}
+
+
 function pacmanWasEaten(board){
-	
-	// let temp = pac_color;
+	updateLife();
+
 	for (var i = 1; i <= monster_quantity; i++) {
 		ghostX = ghost_arr[i-1].x
 		ghostY = ghost_arr[i-1].y
-		// board[ghostX][ghostY] = board_cell_type.empty_cell;
 		board[ghostX][ghostY] = ghost_arr[i-1].lastCellValue;
 	}
 	board[pacman.i][pacman.j] = board_cell_type.empty_cell;
 	placeGhostOnBoard(board,monster_quantity);
 	placePacmanOnBoard(board);
-	// pac_color = temp;
 }
 
 function placeFoodOnBoard(board){
@@ -652,10 +664,6 @@ function placeFoodOnBoard(board){
 	let number_of_food_5_points = Math.floor(0.6 * total_food);
 	let number_of_food_15_points = Math.floor(0.3 * total_food);
 	let number_of_food_20_points = Math.floor(0.1 * total_food);
-	console.log(number_of_food_5_points)
-	console.log(number_of_food_15_points)
-	console.log(number_of_food_20_points)
-
 
 	// Sometimes if the total food is not a rounded number (20, 50 etc) the sum of the food could be 1 values less than the total food
 	if (number_of_food_5_points + number_of_food_15_points + number_of_food_20_points != total_food){
@@ -664,7 +672,6 @@ function placeFoodOnBoard(board){
 	let number_of_food = total_food
 	let random_number;
 	while( number_of_food > 0){
-		console.log(number_of_food)
 		for (var i = randomInteger(0,9); i < 10; i++) {
 			for (var j = randomInteger(0,9); j < 10; j++) {
 				if(board[i][j] == board_cell_type.empty_cell && number_of_food > 0){
@@ -1130,7 +1137,7 @@ function UpdatePosition() {
 		showPage("configuration");
 	}
 
-	else if (time_left < 0) {
+	else if (time_left < 0 || pacman.hearts <= 0) {
 		$("#lblTime").css("background-color","white")
 		window.alert("Game Over");
 		window.alert("Your Score is: " + score)
