@@ -620,7 +620,9 @@ function placeGhostOnBoard(board,ghost_count){
 }
 
 function placeCoinOnBoard(board){
-	board[1][1] = board_cell_type.coin;
+	let empty_cell = findRandomEmptyCell(board)
+
+	board[empty_cell[0]][empty_cell[1]] = board_cell_type.coin;
 }
 
 function pacmanWasEaten(board){
@@ -835,8 +837,8 @@ function drawCoin(x,y){
 	context.fill();
 	context.beginPath();
 	context.arc(x , y , 25 ,0  * Math.PI, 2 * Math.PI); // circle
-	context.fillStyle = "black"; //color
-	context.fill();
+	context.strokeStyle = "black"; //color
+	context.stroke();
 }
 
 function drawGhost(center, i,j){
@@ -950,7 +952,7 @@ function Draw(Direction) {
 
 			} 
 			else if(board[i][j] == board_cell_type.coin)
-				drawCoin(center.x,center.j);
+				drawCoin(center.x,center.y);
 			else if(board[i][j] == board_cell_type.Heart)
 				drawHeart(center.x,center.y) 
 			
