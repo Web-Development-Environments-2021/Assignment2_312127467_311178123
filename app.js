@@ -4,6 +4,7 @@ var hearts_path = pictures_path + "hearts/"
 var pacman = new Object();
 var coin = new Object();
 pacman.hearts = 5;
+pacman.eaten = false;
 var heart = new Object();
 var ghost1 = new Object();
 var ghost2 = new Object();
@@ -637,7 +638,13 @@ function placeCoinOnBoard(board){
 }
 
 function updateLife(){
-	pacman.hearts--;
+
+	if (pacman.eaten)
+		pacman.hearts--;
+
+	else
+		pacman.hearts++;
+
 	// In case that was the last live - show 1 heart to the user before the game over message
 	if(pacman.hearts == 0)
 		$("#lives_bar").attr("src",hearts_path + "1hearts.png");
@@ -647,6 +654,7 @@ function updateLife(){
 
 
 function pacmanWasEaten(board){
+	pacman.eaten = true;
 	updateLife();
 
 	for (var i = 1; i <= monster_quantity; i++) {
@@ -1112,6 +1120,10 @@ function UpdatePosition() {
 	else if (board[pacman.i][pacman.j] == board_cell_type.food_20_points) {
 		score = score + 20;
 		normalized_score  = normalized_score + 1;
+	}
+	else if (board[pacman.i][pacman.j] == board_cell_type.Heart) {
+		pacman.eaten = false;
+		updateLife()
 	}
 	board[pacman.i][pacman.j] = board_cell_type.Pacman;
 	var currentTime = new Date();
