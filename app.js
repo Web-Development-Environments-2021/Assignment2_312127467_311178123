@@ -1053,6 +1053,8 @@ function Draw(Direction) {
 	}
 }
 
+
+/* ------------------------------ Update Position Methods ----------------------------------- */
 function validMove(board,x,y){
 	if(x < 0 || x >9 || y<0 || y>9)
 		return false;
@@ -1078,22 +1080,22 @@ function UpdatePosition() {
 	board[pacman.i][pacman.j] = 0;
 	var x = GetKeyPressed();
 	if (x == 1) {
-		if (pacman.j > 0 && validMove(board,pacman.i,pacman.j-1)){//board[shape.i][shape.j - 1] != board_cell_type.Wall) {
+		if (validMove(board,pacman.i,pacman.j-1)){
 			pacman.j--;
 		}
 	}
 	if (x == 2) {
-		if (pacman.j < 9 && validMove(board,pacman.i,pacman.j+1)){//board[shape.i][shape.j + 1] != board_cell_type.Wall) {
+		if (validMove(board,pacman.i,pacman.j+1)){
 			pacman.j++;
 		}
 	}
 	if (x == 3) {
-		if (pacman.i > 0 && validMove(board,pacman.i-1,pacman.j)){//board[shape.i - 1][shape.j] != board_cell_type.Wall) {
+		if (validMove(board,pacman.i-1,pacman.j)){
 			pacman.i--;
 		}
 	}
 	if (x == 4) {
-		if (pacman.i < 9 && validMove(board,pacman.i+1,pacman.j)){//board[shape.i + 1][shape.j] != board_cell_type.Wall) {
+		if (validMove(board,pacman.i+1,pacman.j)){
 			pacman.i++;
 		}
 	}
@@ -1148,6 +1150,8 @@ function UpdatePosition() {
 		Draw(x);
 	}
 }
+
+/* --------------------------------------------------------------------------------------- */
 
 function checkConfiguration(){
 
