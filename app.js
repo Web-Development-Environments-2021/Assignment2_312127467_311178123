@@ -648,6 +648,11 @@ function updateLife(){
 	// In case that was the last live - show 1 heart to the user before the game over message
 	if(pacman.hearts == 0)
 		$("#lives_bar").attr("src",hearts_path + "1hearts.png");
+
+	// In case the pacman has full life don't increase the life bar	
+	else if(pacman.hearts > 5)
+		$("#lives_bar").attr("src",hearts_path + "5hearts.png");
+
 	else	
 		$("#lives_bar").attr("src",hearts_path + pacman.hearts + "hearts.png");
 }
