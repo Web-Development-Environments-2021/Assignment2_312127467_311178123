@@ -54,6 +54,7 @@ const board_cell_type = {
 	Pacman: 4,
 	Wall: 5,
 	Heart: 6,
+	coin:7,
 	ghost1: 10,
 	ghost2: 11,
 	ghost3: 12,
@@ -527,10 +528,11 @@ function Start() {
 		}
 
 	}
+	placeCoinOnBoard(board);
 	placeGhostOnBoard(board, monster_quantity);
-	placeFoodOnBoard(board)
-	placePacmanOnBoard(board)
-	placeHeartsOnBoard(board)
+	placeFoodOnBoard(board);
+	placePacmanOnBoard(board);
+	placeHeartsOnBoard(board);
 
 	keysDown = {};
 	addEventListener(
@@ -615,6 +617,10 @@ function placeGhostOnBoard(board,ghost_count){
 		//check the last item was not "eaten" by the ghost
 		ghost_arr[i-1].lastCellValue = board_cell_type.empty_cell;
 	}		
+}
+
+function placeCoinOnBoard(board){
+	board[1][1] = board_cell_type.coin;
 }
 
 function pacmanWasEaten(board){
@@ -821,6 +827,18 @@ function drawDownPacman(x,y){
 	context.fill();
 }
 
+function drawCoin(x,y){
+	context.beginPath();
+	context.arc(x, y, 30, 0 * Math.PI , 2 * Math.PI); //circle
+	context.lineTo(x, y);
+	context.fillStyle = "gold"; //color
+	context.fill();
+	context.beginPath();
+	context.arc(x , y , 25 ,0  * Math.PI, 2 * Math.PI); // circle
+	context.fillStyle = "black"; //color
+	context.fill();
+}
+
 function drawGhost(center, i,j){
 	if(board[i][j]== board_cell_type.ghost1 || board[i][j]==board_cell_type.ghost2 || board[i][j]==board_cell_type.ghost3 || board[i][j]==board_cell_type.ghost4){
 		context.beginPath();
@@ -930,7 +948,10 @@ function Draw(Direction) {
 					drawRightPacman(center.x,center.y);
 				
 
-			} else if(board[i][j] == board_cell_type.Heart)
+			} 
+			else if(board[i][j] == board_cell_type.coin)
+				drawCoin(center.x,center.j);
+			else if(board[i][j] == board_cell_type.Heart)
 				drawHeart(center.x,center.y) 
 			
 			else if (board[i][j] == board_cell_type.food_5_points) {
@@ -1030,11 +1051,12 @@ function UpdatePosition() {
 	else if (normalized_score  >  total_food) {
 		$("#lblTime").css("background-color","white")
 		window.alert("Game completed");
+		window.alert("Your Score is: " + score)
 		resetGame();
 		showPage("configuration");
 	}
 
-	else if (time_left <= 0) {
+	else if (time_left < 0) {
 		$("#lblTime").css("background-color","white")
 		window.alert("Game Over");
 		window.alert("Your Score is: " + score)
