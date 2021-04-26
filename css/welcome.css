@@ -1,0 +1,9 @@
+#welcome {
+    display: flex;
+    justify-content: center;
+    margin-top: 15%;
+    align-items: center;
+    align-content: stretch;
+    flex-wrap: wrap;
+    flex-direction: column;
+}

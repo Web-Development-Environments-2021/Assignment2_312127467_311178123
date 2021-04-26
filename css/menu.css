@@ -1,0 +1,45 @@
+ 
+.menu {
+    background-color: rgb(216, 179, 17);
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column-reverse;
+    z-index: 1;
+}
+
+.links{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation-name: letters;
+    animation-duration: 4s;
+}
+
+.menu a {
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 1% 16px;
+    text-decoration: none;
+    font-size: 17px;
+
+}
+
+.menu :last-child{
+    float: right;
+}
+
+.menu a:hover {
+    background: #ddd;
+    color: black;
+    cursor: pointer;
+}
+
+.logo {
+    position: relative;
+    -webkit-animation: moveImg 4s normal ease-out;
+
+  }

@@ -146,7 +146,12 @@ $(document).ready(function() {
 		},
 			
 
-		submitHandler:	(form) => {showPage('login')}
+		submitHandler:	(form) => {
+			let user = $("#username").val();
+			let password = $("#password").val();
+			localStorage.setItem(user, password)
+			alert("You were sucessfully registered")
+			showPage('login')}
 		})
 	
 
@@ -172,8 +177,7 @@ $(document).ready(function() {
 					required: "Please enter password",
 				}
 			},
-			submitHandler:	(form) => {showPage('configuration')}
-			})
+			submitHandler:	(form) => {showPage('configuration')}})
 
 			$('#configuration_form').validate({
 		
@@ -197,6 +201,9 @@ $(document).ready(function() {
 });
 
 
+function addUser(){
+
+}
 
 /* ----------- Validation Methods ----------------------------*/
 
