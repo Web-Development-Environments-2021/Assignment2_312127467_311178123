@@ -90,7 +90,7 @@ $(document).ready(function() {
 	
 	// When the user clicks anywhere outside of the modal, close it
 	window.onclick = function(event) {
-		if (event.target == $("#myModal")[0]) {
+		if (event.target == $("#aboutModal")[0]) {
 			$("#aboutModal").hide();
 		}
 	}
@@ -223,7 +223,6 @@ $.validator.addMethod("isPassowrdCorrect", function(value, element){
 
 	var username_val = $.trim($('#username_login').val());
 	var user_password = localStorage.getItem(username_val);
-
 	if(user_password != value){
 		return false;
 	}
@@ -248,6 +247,7 @@ $.validator.addMethod("isRegistered", function(value, element){
     if( user != null){
         return true;
     } else {
+		//alert("Username does not exist")
         return false;
     };
 },"No such user exists in the system");
@@ -291,7 +291,16 @@ validPassword = (passowrd) => {
 
 /* ---------------------------------------*/
 
-
+function passwordCorrect(){
+	var username_val = $.trim($('#username_login').val());
+	var user_password = localStorage.getItem(username_val);
+	if(user_password != value){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
 
 /* ----------- Screen switching methods ---------- */
 function showPage(page){

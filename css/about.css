@@ -18,10 +18,11 @@
   margin: 8px;
   width: 30%;
 }
-  
+
+
 
 .about-section {
-  padding: 50px;
+  padding: 20px;
   text-align: initial;
   background-color: #474e5d;
   color: white;
@@ -71,7 +72,7 @@
   z-index: 1; /* Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
-  top: -5%; /* Make the box closer to the top*/
+  top: -10%; /* Make the box closer to the top*/
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
@@ -134,43 +135,16 @@
   color: white;
 }
 
-
-/* Add Animation */
-@-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0} 
-  to {top:0; opacity:1}
+#about_title{
+  color:white;
+  text-align: center;
 }
 
-@keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+.team_names{
+  color:black;
 }
 
-/* The Close Button */
-.close {
-  color: white;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+#our_team{
+  margin:0.5%;
+  text-align:center
 }
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.modal-header {
-  padding: 2px 16px;
-  background-color: orange;
-  color: white;
-}
-
-.modal-body {padding: 2px 16px;}
-
-.modal-footer {
-  padding: 2px 16px;
-  background-color: orange;
-  color: white;
-} 
