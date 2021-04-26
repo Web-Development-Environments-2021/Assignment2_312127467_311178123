@@ -21,6 +21,7 @@ board_corners.corner = {
 	4: [9,9]
 }
 var board;
+var empty_cell_array;
 var score;
 var normalized_score = 0;
 var pac_color;
@@ -369,6 +370,23 @@ function getKeyValue(event){
 		return "ArrowRight";
 
 }
+
+function removeValueFromEmptyArray(value){
+
+	empty_cell_array = empty_cell_array.filter(function(element){
+		return element[0] != value[0] || element[1] != value[1]
+	})
+}
+
+function compareCellArrays(cell1, cell2){
+	if(cell1.length != 2 || cell2.length != 2)
+		return false;
+	else if(cell1[0] == cell2[0] && cell1[1] == cell2[1])
+		return true;
+	else 
+		return false;
+}
+
 function updateOnChange(){
 	$( "#up" ).keydown(function( event ) {
 		moveup = getKeyValue(event);
@@ -491,6 +509,7 @@ function limit(element)
 
 function Start() {
 	board = new Array();
+	empty_cell_array = new Array();
 	score = 0;
 	pac_color = "yellow";
 	var cnt = 100;
@@ -544,6 +563,7 @@ function Start() {
 				// 	pacman_remain--;
 				// 	board[i][j] = board_cell_type.Pacman;
 				board[i][j] = board_cell_type.empty_cell;
+				empty_cell_array.push([i,j])
 
 				//} //else {
 					//board[i][j] = board_cell_type.empty_cell;
@@ -553,14 +573,13 @@ function Start() {
 		}
 
 	}
-/*********************************** END Walls*************************** */
 	
 	placeWallsOnBoard(board);
 	placeCoinOnBoard(board);
 	placeGhostOnBoard(board, monster_quantity);
-	placeFoodOnBoard(board);
 	placePacmanOnBoard(board);
 	placeHeartsOnBoard(board);
+	placeFoodOnBoard(board);
 
 	keysDown = {};
 	addEventListener(
@@ -582,14 +601,20 @@ function Start() {
 	coin_interval = setInterval(UpdateCoinPosition, 550); 
 }
 
+// function findRandomEmptyCell(board) {
+// 	var i = Math.floor(Math.random() * 9 + 1);
+// 	var j = Math.floor(Math.random() * 9 + 1);
+// 	while (board[i][j] != 0) {
+// 		i = Math.floor(Math.random() * 9 + 1);
+// 		j = Math.floor(Math.random() * 9 + 1);
+// 	}
+// 	return [i, j];
+// }
+
 function findRandomEmptyCell(board) {
-	var i = Math.floor(Math.random() * 9 + 1);
-	var j = Math.floor(Math.random() * 9 + 1);
-	while (board[i][j] != 0) {
-		i = Math.floor(Math.random() * 9 + 1);
-		j = Math.floor(Math.random() * 9 + 1);
-	}
-	return [i, j];
+	let random_cell = randomInteger(0,empty_cell_array.length-1);
+	let cell = empty_cell_array.splice(random_cell,1);
+	return cell[0];
 }
 
 function GetKeyPressed() {
@@ -618,13 +643,18 @@ function GetKeyPressed() {
 /* ------------ Place Objects On Board Methods -------------- */
 
 function placeWallsOnBoard(board){
-	let num_of_walls = randomInteger(7,12);
+	
+	//max ghosts = 4 , max food = 90 , hearts = 2, pacman = 1, coin = 1 -- > min space = 2
+	let max_walls = 100 - 4 - total_food - monster_quantity
+	let max_in = Math.min(12,max_walls);
+	let num_of_walls = randomInteger(2,max_in); // 2 -- 45(depending on input)
 	let k=0;
 	while(k<num_of_walls) {
 		let wall_cell = findRandomEmptyCell(board);
 		//do not place walls at corners
-		if(wall_cell != board_corners.corner[1] && wall_cell != board_corners.corner[2] &&
-			wall_cell != board_corners.corner[3] && wall_cell != board_corners.corner[4] ){
+		if(!compareCellArrays(wall_cell,board_corners.corner[1]) && !compareCellArrays(wall_cell,board_corners.corner[2]) &&
+			!compareCellArrays(wall_cell,board_corners.corner[3]) && !compareCellArrays(wall_cell,board_corners.corner[4]) 
+			&& !compareCellArrays(wall_cell,[5,5])){
 
 				board[wall_cell[0]][wall_cell[1]] = board_cell_type.Wall;
 				k++;
@@ -645,8 +675,6 @@ function placeHeartsOnBoard(board){
 	empty_cell = findRandomEmptyCell(board)
 	board[empty_cell[0]][empty_cell[1]] = board_cell_type.Heart
 
-	heart.i = empty_cell[0];
-	heart.j = empty_cell[1];
 }
 
 function placeGhostOnBoard(board,ghost_count){
@@ -660,7 +688,8 @@ function placeGhostOnBoard(board,ghost_count){
 		ghost_arr[i-1].type = i+9;
 		//check the last item was not "eaten" by the ghost
 		ghost_arr[i-1].lastCellValue = board_cell_type.empty_cell;
-	}		
+		removeValueFromEmptyArray(chosen_corner)
+	}
 }
 
 function placeCoinOnBoard(board){
@@ -671,6 +700,7 @@ function placeCoinOnBoard(board){
 	// coin.x = empty_cell[0];
 	// coin.y = empty_cell[1];
 	coin.lastCellValue = board_cell_type.empty_cell;
+	removeValueFromEmptyArray([5,5]);
 }
 
 function updateLife(){
@@ -682,7 +712,7 @@ function updateLife(){
 		pacman.hearts++;
 
 	// In case that was the last live - show 1 heart to the user before the game over message
-	if(pacman.hearts == 0)
+	if(pacman.hearts <= 0)
 		$("#lives_bar").attr("src",hearts_path + "1hearts.png");
 
 	// In case the pacman has full life don't increase the life bar	
@@ -705,6 +735,7 @@ function pacmanWasEaten(board){
 		board[ghostX][ghostY] = ghost_arr[i-1].lastCellValue;
 	}
 	board[pacman.i][pacman.j] = board_cell_type.empty_cell;
+	empty_cell_array.push([pacman.i,pacman.j])
 	placeGhostOnBoard(board,monster_quantity);
 	placePacmanOnBoard(board);
 }
@@ -721,31 +752,39 @@ function placeFoodOnBoard(board){
 	}
 	let number_of_food = total_food
 	let random_number;
+
 	while( number_of_food > 0){
-		for (var i = randomInteger(0,9); i < 10; i++) {
-			for (var j = randomInteger(0,9); j < 10; j++) {
-				if(board[i][j] == board_cell_type.empty_cell && number_of_food > 0){
-					random_number = Math.random()
+		let random_empty_cell = findRandomEmptyCell(board);
+		let i = random_empty_cell[0];
+		let j = random_empty_cell[1];
+		if(number_of_food > 0){
+			random_number = Math.random()
 
-					// 10% of the random values will corresponds to the 10% of 20 points food
-					if (random_number < 0.1 & number_of_food_20_points > 0){
-						board[i][j] = board_cell_type.food_20_points
-						number_of_food_20_points--;
-					}
-					// 30% of the random values will corresponds to the 30% of 15 points food
-					else if(random_number >= 0.1 & random_number < 0.4 & number_of_food_15_points > 0){
-						board[i][j] = board_cell_type.food_15_points
-						number_of_food_15_points--;
-					}
-					// 60% of the random values will corresponds to the 60% of 5 points food
-					else if(number_of_food_5_points > 0){
-						board[i][j] = board_cell_type.food_5_points
-						number_of_food_5_points--;
-					}
-					number_of_food = number_of_food_5_points + number_of_food_15_points + number_of_food_20_points;
-
-				}
+			// 10% of the random values will corresponds to the 10% of 20 points food
+			if (random_number < 0.1 & number_of_food_20_points > 0){
+				board[i][j] = board_cell_type.food_20_points
+				number_of_food_20_points--;
 			}
+			// 30% of the random values will corresponds to the 30% of 15 points food
+			else if(random_number >= 0.1 & random_number < 0.4 & number_of_food_15_points > 0){
+				board[i][j] = board_cell_type.food_15_points
+				number_of_food_15_points--;
+			}
+			// 60% of the random values will corresponds to the 60% of 5 points food
+			else if(number_of_food_5_points > 0){
+				board[i][j] = board_cell_type.food_5_points
+				number_of_food_5_points--;
+			}
+			else if(number_of_food_15_points > 0){
+				board[i][j] = board_cell_type.food_15_points
+				number_of_food_15_points--;
+			}
+			else if(number_of_food_20_points > 0){
+				board[i][j] = board_cell_type.food_20_points
+				number_of_food_20_points--;
+			}
+
+			number_of_food = number_of_food_5_points + number_of_food_15_points + number_of_food_20_points;
 		}
 	}
 }
@@ -1166,20 +1205,24 @@ function UpdatePosition() {
 		}
 	}
 	if (board[pacman.i][pacman.j] == board_cell_type.food_5_points) {
+		empty_cell_array.push([pacman.i,pacman.j])
 		score = score + 5;
 		normalized_score = normalized_score + 1
 	}
 	
 	else if (board[pacman.i][pacman.j] == board_cell_type.food_15_points) {
+		empty_cell_array.push([pacman.i,pacman.j])
 		score = score + 15;
 		normalized_score = normalized_score + 1
 	}
 	
 	else if (board[pacman.i][pacman.j] == board_cell_type.food_20_points) {
+		empty_cell_array.push([pacman.i,pacman.j])
 		score = score + 20;
 		normalized_score  = normalized_score + 1;
 	}
 	else if (board[pacman.i][pacman.j] == board_cell_type.Heart) {
+		empty_cell_array.push([pacman.i,pacman.j])
 		pacman.eaten = false;
 		updateLife()
 	}
@@ -1191,13 +1234,13 @@ function UpdatePosition() {
 		pac_color = "red";
 		$("#lblTime").css("background-color","red")
 	}
+
 	else if (normalized_score >= total_food/2) {
 		if(ill_color)
 			illToGreen = true;
 		else
 			pac_color = "green";
 	}
-
 	// eat last food
 	if (normalized_score  ==  total_food) {
 		normalized_score +=1
