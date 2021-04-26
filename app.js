@@ -116,7 +116,7 @@ $(document).ready(function() {
 			},
 			fullname:{
 				required:true,
-				pattern: /[a-zA-Z]/
+				pattern: /^[a-zA-z]+$/
 			},
 			email:{
 				required:true,
