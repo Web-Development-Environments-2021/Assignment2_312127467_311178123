@@ -5,7 +5,7 @@
 ---
 Link to the website:
 
-https://web-development-environments-2021.github.io/311178123/
+https://web-development-environments-2021.github.io/Assignment2_312127467_311178123/
 
 תז המגישים:
 311178123, 312127467
