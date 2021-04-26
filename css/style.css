@@ -1,3 +1,6 @@
+@import './game.css';
+@import './about.css';
+
 @keyframes letters {
     0%{
       color: black;
@@ -273,7 +276,7 @@ p:hover {
   align-items: center;
 }
 
-#config_title{
+/* #config_title{
   margin: 5% auto;
 }
 
@@ -281,8 +284,8 @@ p:hover {
   display: absolute;
   height: 40px;
   margin-left: 0px;
-}
-
+} */
+/* 
 #game_score_time_live{
   display: flex;
   flex-direction: column;
@@ -290,9 +293,9 @@ p:hover {
   justify-content: center;
   align-items: stretch;
   flex-wrap: nowrap;
-}
+} */
 
-#canvas{
+/* #canvas{
   margin-left: 5%;
   background: black
 }
@@ -310,25 +313,25 @@ p:hover {
   align-content: center;
   justify-content: center;
   align-items: center;
-}
+} */
 
-#game{
+/* #game{
   margin: 5%;
   display: flex;
   flex-direction: row;
   align-content: center;
   flex-wrap: nowrap;
-  justify-content: center;  }
+  justify-content: center;  } */
 
 
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
-#new_game_button{width:200px; line-height:40px; }
-#MoveRight, #Monsters{margin-bottom: 15%;}
+/* #new_game_button{width:200px; line-height:40px; }
+#MoveRight, #Monsters{margin-bottom: 15%;} */
 
-.row{
+/* .row{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -462,4 +465,4 @@ p:hover {
   padding: 2px 16px;
   background-color: orange;
   color: white;
-}
+} */

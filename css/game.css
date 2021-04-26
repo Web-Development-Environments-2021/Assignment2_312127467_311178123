@@ -1,0 +1,43 @@
+#game{
+    margin: 5%;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+#game_score_time_live{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: nowrap;
+}
+  
+#lives{
+    margin: 5%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+} 
+
+#canvas{  margin-left: 5%; background: black}
+
+#config_title{margin: 5% auto;}
+  
+#new_game_button{width:200px; line-height:40px; }
+
+#MoveRight, #Monsters{margin-bottom: 15%;}
+
+.game_progress{margin: 5%;}
+
+.configs{
+    display: absolute;
+    height: 40px;
+    margin-left: 0px;
+}
