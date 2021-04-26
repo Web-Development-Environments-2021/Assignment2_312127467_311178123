@@ -72,41 +72,25 @@
 			
 			<form method="post" id="configuration_form">
 			<!-- <label for="quantity" style="color: white;">How would you like to move your character?</label> -->
-			<h2 style="color: white;">How would you like to move your character?</h2>
+			<h2>How would you like to move your character?</h2>
 
 			<span class="font"></span><input type="text" id="up" placeholder="UpKey" autocomplete="off" value="ArrowUp" onkeydown="updateUpKey(event, this);" onkeyup="limit(this);" required> </br>
 			<span class="font"></span><input type="text" id="down" placeholder="DownKey" autocomplete="off" value="ArrowDown" onkeydown="updateDownKey(event,this);" onkeyup="limit(this);" required></br>
 			<span class="font"></span><input type="text" id="left" placeholder="LeftKey" autocomplete="off" value="ArrowLeft" onkeydown="updateLeftKey(event,this);" onkeyup="limit(this);" required> </br>
 			<span class="font"></span><input type="text" id="right" placeholder="RightKey" autocomplete="off" value="ArrowRight" onkeydown="updateRightKey(event,this);" onkeyup="limit(this);" required> </br>
 			</br>
-
-
-			<!-- <label for="quantity" style="color: white;">How many food balls would you like in the game?</br> (Between 50 to 90):</label> -->
-			<h2 style="color: white;">How many food balls would you like in the game?</br>(Between 50 to 90):</h2>
+			<h2>How many food balls would you like in the game?</br>(Between 50 to 90):</h2>
 			<input type="number" id="ball_quantity" name="quantity" min="50" max="90" value="50"></br>
-			<!-- <label for="quantity" style="color: white;">Game Duration</br> (Atleast 60 seconds):</label> -->
-			<h2 style="color: white;">Game Duration</br> (Atleast 60 seconds):</h2>
+			<h2>Game Duration</br> (Atleast 60 seconds):</h2>
 			<input type="number" id="time_quantity" name="duration" min="60" value="60"></br>
-			<!-- <label for="quantity" style="color: white;">Monsters</br> (Betweem 1 to 4):</label> -->
-			<h2 style="color: white;">Monsters</br>(Betweem 1 to 4):</h2>
-
+			<h2>Monsters</br>(Betweem 1 to 4):</h2>
 			<input type="number" id="monster_quantity" name="monsters" min="1" max="4" value="2"></br>
-
-			</br>
-			</br>
-			<!-- <label for="favcolor" style="color: white;">Select your favorite color for each ball type:</label></br> -->
-			<h2 style="color: white;">Select your favorite color for each ball type:</h2>
-
-			<!-- <label for="favcolor" style="color: white;">5 Point Balls:</label></br> -->
-			<h2 style="color: white;">5 Point Balls:</h2>
+			<h2>Select your favorite color for each ball type:</h2>
+			<h2>5 Point Balls:</h2>
 			<input type="color" id="color1" name="favcolor" value="#ff0000">
-
-			<!-- <label for="favcolor" style="color: white;">15 Point Balls:</label></br> -->
-			<h2 style="color: white;">15 Point Balls:</h2>
+			<h2>15 Point Balls:</h2>
 			<input type="color" id="color2" name="favcolor" value="#008000">
-
-			<!-- <label for="favcolor" style="color: white;">25 Point Balls:</label></br> -->
-			<h2 style="color: white;">25 Point Balls:</h2>
+			<h2>25 Point Balls:</h2>
 			<input type="color" id="color3" name="favcolor" value="#0000FF">
 
 			</br>

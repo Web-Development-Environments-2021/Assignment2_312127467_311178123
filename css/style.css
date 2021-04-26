@@ -41,6 +41,13 @@ body {
 h1{
   font-size: 15px
 }
+h2{
+  color: orange;
+  font-family: 'Titan One';
+  text-shadow: 1px 2px 1px  rgba(0,0,0,.5);
+  font-size: 15px;
+  margin: 5%;
+}
 
 header{
   padding: 10px;
