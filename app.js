@@ -549,36 +549,11 @@ function Start() {
 
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
-		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
 		for (var j = 0; j < 10; j++) {
-			// if (
-			// 	(i == 3 && j == 3) ||
-			// 	(i == 3 && j == 4) ||
-			// 	(i == 3 && j == 5) ||
-			// 	(i == 6 && j == 1) ||
-			// 	(i == 6 && j == 2)
-			// ) {
-			// 	board[i][j] = board_cell_type.Wall;
-			// }
-			//if(validMove(i,j)) {//no ghost or wall
-				//var randomNum = Math.random();
-				// if (randomNum <= (1.0 * food_remain) / cnt) {
-				// 	food_remain--;
-				// 	board[i][j] = board_cell_type.food_5_points;
-				// //}
-				//  if (randomNum < (1.0 * (pacman_remain )) / cnt) {
-					// shape.i = i;
-					// shape.j = j;
-				// 	pacman_remain--;
-				// 	board[i][j] = board_cell_type.Pacman;
+	
 				board[i][j] = board_cell_type.empty_cell;
 				empty_cell_array.push([i,j])
-
-				//} //else {
-					//board[i][j] = board_cell_type.empty_cell;
-				//}
 				cnt--;
-			//}
 		}
 
 	}
@@ -609,16 +584,6 @@ function Start() {
 	ghost_interval = setInterval(UpdateGhostPosition, 550); 
 	coin_interval = setInterval(UpdateCoinPosition, 550); 
 }
-
-// function findRandomEmptyCell(board) {
-// 	var i = Math.floor(Math.random() * 9 + 1);
-// 	var j = Math.floor(Math.random() * 9 + 1);
-// 	while (board[i][j] != 0) {
-// 		i = Math.floor(Math.random() * 9 + 1);
-// 		j = Math.floor(Math.random() * 9 + 1);
-// 	}
-// 	return [i, j];
-// }
 
 function findRandomEmptyCell(board) {
 	let random_cell = randomInteger(0,empty_cell_array.length-1);
@@ -705,9 +670,6 @@ function placeCoinOnBoard(board){
 	board[5][5] = board_cell_type.coin;
 	coin.x = 5;
 	coin.y = 5;
-	// board[empty_cell[0]][empty_cell[1]] = board_cell_type.coin;
-	// coin.x = empty_cell[0];
-	// coin.y = empty_cell[1];
 	coin.lastCellValue = board_cell_type.empty_cell;
 	removeValueFromEmptyArray([5,5]);
 }
