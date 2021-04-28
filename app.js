@@ -1288,6 +1288,7 @@ function resetGame(){
 	lblTime.value = time_countdown;
 	pacman.hearts = 5
 	illToGreen = false;
+	$("#lblTime").css("background-color","white")
 }
 
 /*************************************** MUSIC ********************************8 */ 
